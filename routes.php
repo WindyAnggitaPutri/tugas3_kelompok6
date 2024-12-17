@@ -1,9 +1,9 @@
 <?php
 // routes.php
 
-require_once 'app/controllers/KursusController.php';
+require_once 'app/controllers/UserController.php';
 
-$controller = new KursusController();
+$controller = new UserController();
 $url = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
@@ -24,5 +24,5 @@ if ($url == '/user/index' || $url == '/') {
     $controller->delete($userId);
 } else {
     http_response_code(404);
-    echo "404 Not Found";
+    echo "hihi";
 }

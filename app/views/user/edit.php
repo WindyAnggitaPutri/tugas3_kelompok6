@@ -1,36 +1,45 @@
+
+
 <!-- app/views/user/edit.php -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Kursus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Materi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h2>Edit Kursus</h2>
-    <form action="/user/update/<?php echo $kursus['id_kursus']; ?>" method="POST">
-        <label for="id_kursus">Id Kursus:</label>
-        <input type="id" id="id_kursus" name="id_kursus" value="<?php echo $kursus['id_kursus']; ?>" required>
-        <br>
-        <label for="id_user">Id User:</label>
-        <input type="id" id="id_user" name="id_user" value="<?php echo $kursus['id_user']; ?>" required>
-        <br>
-        <label for="id_materi">Id Materi:</label>
-        <input type="id" id="id_materi" name="id_materi" value="<?php echo $kursus['id_materi']; ?>" required>
-        <br>
-        <label for="judul_kursus">Judul Kursus:</label>
-        <input type="text" id="judul_kursus" name="judul_kursus" value="<?php echo $kursus['judul_kursus']; ?>" required>
-        <br>
-        <label for="instruktur">Instruktur:</label>
-        <input type="text" id="instruktur" name="instruktur" value="<?php echo $kursus['instruktur']; ?>" required>
-        <br>
-        <label for="deskripsi">Deskripsi:</label>
-        <input type="text" id="deskripsi" name="deskripsi" value="<?php echo $kursus['deskripsi']; ?>" required>
-        <br>
-        <label for="durasi">Durasi:</label>
-        <input type="text" id="durasi" name="durasi" value="<?php echo $kursus['durasi']; ?>" required>
-        <br>
-        <button type="submit">Update</button>
-    </form>
-    <a href="/user/index">Back to List</a>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center text-primary mb-4">Edit Pengguna</h2>
+        <form action="/materi/update/<?php echo $materi['id_user']; ?>" method="POST" class="bg-white p-4 rounded shadow">
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama:</label>
+                <input type="text" name="nama" id="nama" class="form-control" value="<?php echo $user['nama']; ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <textarea name="email" id="email" class="form-control" rows="4" required><?php echo $user['email']; ?></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="text" name="password" id="password" class="form-control" value="<?php echo $user['password']; ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="peran" class="form-label">Peran:</label>
+                <input type="text" name="peran" id="peran" class="form-control" value="<?php echo $user['peran']; ?>" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="/materi/index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
