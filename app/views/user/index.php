@@ -44,8 +44,8 @@
                 <td><?= htmlspecialchars($kursus['instruktur']) ?></td>
                 <td><?= htmlspecialchars($kursus['deskripsi']) ?></td>
                 <td><?= htmlspecialchars($kursus['durasi']) ?></td>
-                <td><a href="/materi/edit/<?= $materi['id_materi']; ?>" class="btn btn-warning btn-sm">Edit</a> |
-                        <a href="/materi/delete/<?= $materi['id_materi']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin?')">Delete</a>
+                <td><a href="/user/edit/<?= $kursus['id_kursus']; ?>" class="btn btn-warning btn-sm">Edit</a> |
+                        <a href="/user/delete/<?= $kursus['id_kursus']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin?')">Delete</a>
                     </td></td>
              
             
