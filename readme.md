@@ -325,3 +325,95 @@ bindParam() digunakan untuk mengikat nilai dari array $data dan $id_materi ke pl
 }
 ```
 public function delete adalah metode yang digunakn untuk menghapus data dari database dengan mengambil id_materi yang akan dihapus.  Fungsi ini menerima ID dari materi yang akan dihapus ($id_materi), menyiapkan dan menjalankan query SQL untuk menghapus record yang memiliki ID tersebut. Jika penghapusan berhasil, fungsi ini mengembalikan true; jika tidak, akan mengembalikan false.
+
+```php
+<?php
+// app/controllers/UserController.php
+require_once '../app/models/materi.php';
+
+class materiController {
+    private $materiModel;
+
+    
+    public function __construct() {
+        $this->materiModel = new Materi();
+    }
+ 
+    public function index() {
+        $materis = $this->materiModel->getAllMateri();
+        require_once '../app/views/materi/index.php';
+
+    }
+```
+$materiModel Variabel ini adalah objek dari kelas Materi.
+__construct(), Konstruktor ini akan dipanggil ketika objek materiController dibuat. Di dalam konstruktor, objek Materi diinisialisasi dan disimpan dalam variabel $materiModel
+
+getAllMateri() Ini adalah metode yang dipanggil dari objek Materi yang menghubungkan ke model Materi untuk mengambil semua data materi dari database.
+$materis Variabel yang menyimpan hasil yang dikembalikan dari metode getAllMateri(). Hasil ini kemungkinan berupa daftar materi yang nantinya akan ditampilkan di halaman web.
+
+Metode index() pada controller materiController digunakan untuk mengambil data materi dari model Materi dan menampilkan hasilnya di halaman index.php. Fungsi ini menghubungkan antara model dan tampilan (view), mengambil data dari database dan menampilkannya kepada pengguna.
+
+```php
+public function create() {
+        require_once '../app/views/materi/create.php';
+    }
+```
+public function create() akan mengarahkan ke halaman create
+
+```php
+public function store() {
+        $id_materi = $_POST['id_materi'];
+        $judul_materi = $_POST['judul_materi'];
+        $konten = $_POST['konten'];
+        $kursus_terkait = $_POST['kursus_terkait'];
+        $this->materiModel->add($id_materi, $judul_materi, $konten, $kursus_terkait);
+        header('Location: /materi/index');
+    }
+```
+fungsi public function store digunakan untuk menyimpan data baruu ke dalam database
+$_POST['id_materi']: Mengambil nilai ID materi yang dimasukkan oleh pengguna.
+$_POST['judul_materi']: Mengambil judul materi.
+$_POST['konten']: Mengambil konten materi.
+$_POST['kursus_terkait']: Mengambil nama kursus terkait yang berhubungan dengan materi.
+
+$this->materiModel->add(...): Di sini, metode add() dari objek materiModel dipanggil untuk menambahkan data materi baru ke dalam database.
+
+fungsi store akan mengarahkan kembali ke halaman index materi
+
+```php
+public function edit($id_materi) {
+        $materi = $this->materiModel->find($id_materi); // mencari berdasarkan idnya
+        require_once __DIR__ . '/../views/materi/edit.php';
+    }
+```
+public function edit mengambil data denganparameter $id_materi dan menampilkan halaman edit untuk materi yang akan diubah
+fungsi find() dipanggil dari objek materiModel. Fungsi ini bertujuan untuk mencari data materi berdasarkan ID ($id_materi).
+fungsi edit akan langsung mengarahkan je halaman edit.
+
+```php
+// proses menjalankan update 
+    public function update($id_materi, $data) {
+        $updated = $this->materiModel->update($id_materi, $data);
+        if ($updated) {
+            header("Location: /materi/index"); // Redirect ke index materi untuk menampilkan list
+        } else {
+            echo "Failed to update materi.";
+        }
+    }
+```
+public function update digunakan untuk memperbarui data materu yag mengarahkan langsung ke halaman lain 
+fungsi update() dipanggil dari objek materiModel untuk memperbarui data materi yang sudah ada di database.
+Memanggil metode update() pada model materiModel untuk memperbarui data materi di database berdasarkan ID dan data baru, jika pembaruan berhasil akan diarahkan ke halaman index materi untuk melihat daftar materi yang telah diperbarui
+
+```php
+public function delete($id_materi) {
+        $deleted = $this->materiModel->delete($id_materi);
+        if ($deleted) {
+            header("Location: /materi/index"); // redirect ke index untuk menampiilkan list 
+        } else {
+            echo "Failed to delete user."; //output apabila data tidak berhasil dihapus
+        }
+    }
+}
+```
+public function delete merupakan proses untuk menghapus data dalam database dengan mem,eriksa $id_materi, jika proses berhasil akan mengarhkan ke laman index.
