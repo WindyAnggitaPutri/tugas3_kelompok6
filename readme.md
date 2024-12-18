@@ -175,3 +175,5 @@ class kursus {
 require_once 'app/models/User.php';
 
 $kursus = new kursus();
+```
+qqqqqqq
