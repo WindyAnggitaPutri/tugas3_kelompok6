@@ -93,3 +93,42 @@ Jika ingin berkontribusi pada proyek ini, silakan buat branch baru dan kirim pul
 
 ## Lisensi
 Proyek ini dilisensikan under MIT License.
+
+
+```php
+<?php
+// config/database.php
+class Database {
+    private $host = '160.19.166.42';
+    private $db_name = '2C_klp6';
+    private $username = '2C_klp6';
+    private $password = 'U_23Xd1hz299OPMj';
+    private $conn;
+```
+**config database digunakan untuk mengatur koneksi ke database MySQL menggunakan PHP Data Objects (PDO). File ini mengelola konfigurasi host, nama database, username, dan password untuk menghubungkan aplikasi Anda ke database.
+
+Pastikan MySQL berjalan di host 160.19.166.42 dengan database 2C_klp6 yang sudah disiapkan.
+Ubah nilai dari properti berikut jika diperlukan:
+
+host: Alamat host server database.
+db_name: Nama database yang akan digunakan.
+username: Username untuk mengakses database.
+password: Password untuk username tersebut
+```
+    public function connect() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            echo "Connection error: " . $e->getMessage();
+        }
+        return $this->conn;
+    }
+
+   
+}
+
+```
+Gunakan metode connect() untuk mendapatkan objek koneksi database.
+
