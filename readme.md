@@ -175,3 +175,9 @@ class kursus {
 require_once 'app/models/User.php';
 
 $kursus = new kursus();
+
+
+
+
+
+#Praktikum PWEB2
