@@ -1,30 +1,33 @@
 <?php
 // routes.php
 
-require_once 'app/controllers/KursusController.php';
+require_once 'app/controllers/materiController.php';
 
-$controller = new KursusController();
+$controller = new MateriController();
+require_once 'app/controllers/UserController.php';
+
+$controller = new UserController();
 $url = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-if ($url == '/user/index' || $url == '/') {
+if ($url == '/materi/index' || $url == '/') {
     $controller->index();
 } elseif ($url == '/user/kursus' || $url == '/') {
     $controller->simpan();
-}elseif ($url == '/user/create' && $requestMethod == 'GET') {
+}elseif ($url == '/materi/create' && $requestMethod == 'GET') {
     $controller->create();
-} elseif ($url == '/user/store' && $requestMethod == 'POST') {
+} elseif ($url == '/materi/store' && $requestMethod == 'POST') {
     $controller->store();
-} elseif (preg_match('/\/user\/edit\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
-    $userId = $matches[1];
-    $controller->edit($userId);
-} elseif (preg_match('/\/user\/update\/(\d+)/', $url, $matches) && $requestMethod == 'POST') {
-    $userId = $matches[1];
-    $controller->update($userId, $_POST);
-} elseif (preg_match('/\/user\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
-    $userId = $matches[1];
-    $controller->delete($userId);
+} elseif (preg_match('/\/materi\/edit\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
+    $materiId = $matches[1];
+    $controller->edit($materiId);
+} elseif (preg_match('/\/materi\/update\/(\d+)/', $url, $matches) && $requestMethod == 'POST') {
+    $materiId = $matches[1];
+    $controller->update($materiId, $_POST);
+} elseif (preg_match('/\/materi\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
+    $materiId = $matches[1];
+    $controller->delete($materiId);
 } else {
     http_response_code(404);
-    echo "404 Not Found";
+    echo "hihi";
 }
