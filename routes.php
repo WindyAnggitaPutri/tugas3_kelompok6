@@ -9,7 +9,9 @@ $requestMethod = $_SERVER['REQUEST_METHOD'];
 
 if ($url == '/user/index' || $url == '/') {
     $controller->index();
-} elseif ($url == '/user/create' && $requestMethod == 'GET') {
+} elseif ($url == '/user/kursus' || $url == '/') {
+    $controller->simpan();
+}elseif ($url == '/user/create' && $requestMethod == 'GET') {
     $controller->create();
 } elseif ($url == '/user/store' && $requestMethod == 'POST') {
     $controller->store();

@@ -71,7 +71,7 @@
                 
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button  type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
     </div>

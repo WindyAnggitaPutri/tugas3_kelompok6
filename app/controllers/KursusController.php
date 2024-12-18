@@ -9,6 +9,12 @@ class KursusController {
         $this->kursusModel = new Kursus();
     }
 
+    public function simpan(){
+        $kursus = $this->kursusModel->getAlltbl_kursus();
+
+        require_once '../app/views/user/kursus.php';
+    }
+    
     public function index() {
         $kursus = $this->kursusModel->getAlltbl_kursus();
         require_once '../app/views/user/index.php';
@@ -52,7 +58,7 @@ $this->view('user/edit', $kursus); // Pastikan kursus berisi deskripsi yang bena
         $deskripsi = $_POST['deskripsi'];
         $durasi = $_POST['durasi'];
         $this->kursusModel->add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi);
-        header('Location: /user/index');
+        header('Location: /user/kursus');
     }
     // Show the edit form with the user data
     public function edit($id_kursus) {
@@ -67,7 +73,7 @@ $this->view('user/edit', $kursus); // Pastikan kursus berisi deskripsi yang bena
     public function update($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi) {
         $updated = $this->kursusModel->update($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi);
         if ($updated) {
-            header("Location: /user/index"); // Redirect to user list
+            header("Location: /user/kursus"); // Redirect to user list
         } else {
             echo "Failed to update kursus.";
         }
