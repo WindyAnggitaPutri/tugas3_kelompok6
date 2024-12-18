@@ -94,84 +94,147 @@ Jika ingin berkontribusi pada proyek ini, silakan buat branch baru dan kirim pul
 ## Lisensi
 Proyek ini dilisensikan under MIT License.
 
-
+* create.php
+  
 ```php
-<?php
-// config/database.php
-class Database {
-    private $host = '160.19.166.42';
-    private $db_name = '2C_klp6';
-    private $username = '2C_klp6';
-    private $password = 'U_23Xd1hz299OPMj';
-    private $conn;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Materi Baru</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center text-primary mb-4">Tambah Materi Baru</h2>
+        <form action="/materi/store" method="POST" class="bg-white p-4 rounded shadow">
+            <div class="mb-3">
+                <label for="judul_materi" class="form-label">Judul Materi:</label>
+                <input type="text" name="judul_materi" id="judul_materi" class="form-control" placeholder="Masukkan judul materi" required>
+            </div>
+            <div class="mb-3">
+                <label for="konten" class="form-label">Konten:</label>
+                <textarea name="konten" id="konten" class="form-control" rows="4" placeholder="Masukkan konten materi" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="kursus_terkait" class="form-label">Kursus Terkait:</label>
+                <input type="text" name="kursus_terkait" id="kursus_terkait" class="form-control" placeholder="Masukkan kursus terkait" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 ```
-config/database.php digunakan untuk mengatur koneksi ke database MySQL menggunakan PHP Data Objects (PDO). File ini mengelola konfigurasi host, nama database, username, dan password untuk menghubungkan ke database.
+"create/materi.php" digunakan sebagai form input menambahkan data materi baru, menggunakan bootstrap untuk desain form ubtuk tampilan yang responsif.
+tombol simpan mengirimkan data ke endpoint /materi/store dengan metode store
 
-Jalankan MySQL di host 160.19.166.42 dengan database 2C_klp6 yang sudah disiapkan.
-Ubah nilai dari properti yang sudah disiapkan:
+* edit.php
 
-host: Alamat host server database (160.19.166.42).
-db_name: Nama database yang akan digunakan (2C_klp6).
-username: Username untuk mengakses database (2C_klp6).
-password: Password untuk username tersebut (U_23Xd1hz299OPMj)
 ```php
-    public function connect() {
-        $this->conn = null;
-        try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $e) {
-            echo "Connection error: " . $e->getMessage();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Materi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center text-primary mb-4">Edit Materi</h2>
+        <form action="/materi/update/<?php echo $materi['id_materi']; ?>" method="POST" class="bg-white p-4 rounded shadow">
+            <div class="mb-3">
+                <label for="judul_materi" class="form-label">Judul Materi:</label>
+                <input type="text" name="judul_materi" id="judul_materi" class="form-control" value="<?php echo $materi['judul_materi']; ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="konten" class="form-label">Konten:</label>
+                <textarea name="konten" id="konten" class="form-control" rows="4" required><?php echo $materi['konten']; ?></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="kursus_terkait" class="form-label">Kursus Terkait:</label>
+                <input type="text" name="kursus_terkait" id="kursus_terkait" class="form-control" value="<?php echo $materi['kursus_terkait']; ?>" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="/materi/index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+```
+"edit.php" digunakan sebagai formulir untuk mengedit data materi yang sudah ada. data yang ditampilkan diambil dari database berdasarkan ID materi.
+tombol update mengirimkan perubahan data ke endpoint /materi/update/(id_materi) dengan metode POST.
+
+* index.php
+
+```php
+<!-- app/views/user/index.php -->
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Materi</title>
+    <!-- Link ke CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Menambahkan beberapa kustomisasi jika diperlukan */
+        .table th, .table td {
+            vertical-align: middle;
         }
-        return $this->conn;
-    }
+    </style>
+</head>
+<body>
 
-   
-}
+<div class="container mt-4">
+    <h2 class="text-center mb-4" style="color:rgb(80, 156, 238);">Daftar Materi</h2>
+    <a href="/materi/create" class="btn btn-primary mb-3">Tambah Materi Baru</a>
+    <table class="table table-bordered table-hover" style="border: 2px solid rgb(80, 156, 238);">
+        <thead style="background-color:rgb(80, 156, 238); color: white;">
+            <tr>
+                <th>ID Materi</th>
+                <th>Judul Materi</th>
+                <th>Konten</th>
+                <th>Kursus Terkait</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($materis as $materi): ?>
+                <tr>
+                    <td><?= htmlspecialchars($materi['id_materi']) ?></td>
+                    <td><?= htmlspecialchars($materi['judul_materi']) ?></td>
+                    <td><?= htmlspecialchars($materi['konten']) ?></td>
+                    <td><?= htmlspecialchars($materi['kursus_terkait']) ?></td>
+                    <td>
+                        <a href="/materi/edit/<?= $materi['id_materi']; ?>" class="btn btn-warning btn-sm">Edit</a> |
+                        <a href="/materi/delete/<?= $materi['id_materi']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin?')">Delete</a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
+</body>
+</html>
 ```
-Gunakan metode connect() untuk mendapatkan objek koneksi database.
+"app/views/materi/index.php" untuk menampilkan daaftar semua materi yang ada di database dalam bentuk table yang responsif.
+menggunakan table dinamis yang menampilkan ID materi, Judul Materi, Konten, Kursus Terkait dan aksi hapus dan edit. tombol edit mengarahkann ke halaman edit untuk memperbarui data, dan tombol hapus untuk menghapus data materi dari database.
 
-### Model Kursus
-File `app/models/Kursus.php` adalah bagian dari aplikasi yang menangani operasi CRUD (Create, Read, Update, Delete) pada tabel `tbl_kursus` di database. File ini menggunakan PDO untuk berinteraksi dengan database.
-```php
-<?php
-// app/models/User.php
-require_once '../config/database.php';
-
-class kursus {
-    private $db;
-
-    public function __construct() {
-        $this->db = (new Database())->connect();
-    }
-```
-
-## Method
-1. **getAlltbl_kursus**
-   ```php
-   public function getAlltbl_kursus() {
-        $query = $this->db->query("SELECT id_kursus,id_user, id_materi, judul_kursus, instruktur, deskripsi, durasi FROM tbl_kursus");
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-    }
-   ```
-   Mendapatkan semua data kursus dari tabel `tbl_kursus`.
-   
-3. **find($id)**  
-   Mencari kursus berdasarkan `id_kursus`.
-
-4. **add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi)**  
-   Menambahkan kursus baru ke tabel `tbl_kursus`.
-
-5. **update($id_kursus, $data)**  
-   Memperbarui data kursus berdasarkan `id_kursus`.
-
-6. **delete($id_kursus)**  
-   Menghapus kursus dari tabel `tbl_kursus` berdasarkan `id_kursus`.
-
-## Contoh Penggunaan
-### Inisialisasi Model
-```php
-require_once 'app/models/User.php';
-
-$kursus = new kursus();
+foreach ($materis as $materi) looping dta yang diambi dari database untuk ditampikan dalam bentuk table.
