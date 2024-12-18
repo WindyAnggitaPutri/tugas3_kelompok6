@@ -133,22 +133,40 @@ password: Password untuk username tersebut (U_23Xd1hz299OPMj)
 Gunakan metode connect() untuk mendapatkan objek koneksi database.
 
 ### Model Kursus
-File `app/models/User.php` adalah bagian dari aplikasi yang menangani operasi CRUD (Create, Read, Update, Delete) pada tabel `tbl_kursus` di database. File ini menggunakan PDO untuk berinteraksi dengan database.
+File `app/models/Kursus.php` adalah bagian dari aplikasi yang menangani operasi CRUD (Create, Read, Update, Delete) pada tabel `tbl_kursus` di database. File ini menggunakan PDO untuk berinteraksi dengan database.
+```php
+<?php
+// app/models/User.php
+require_once '../config/database.php';
+
+class kursus {
+    private $db;
+
+    public function __construct() {
+        $this->db = (new Database())->connect();
+    }
+```
 
 ## Method
-1. **getAlltbl_kursus**  
+1. **getAlltbl_kursus**
+   ```php
+   public function getAlltbl_kursus() {
+        $query = $this->db->query("SELECT id_kursus,id_user, id_materi, judul_kursus, instruktur, deskripsi, durasi FROM tbl_kursus");
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+   ```
    Mendapatkan semua data kursus dari tabel `tbl_kursus`.
    
-2. **find($id)**  
+3. **find($id)**  
    Mencari kursus berdasarkan `id_kursus`.
 
-3. **add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi)**  
+4. **add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi)**  
    Menambahkan kursus baru ke tabel `tbl_kursus`.
 
-4. **update($id_kursus, $data)**  
+5. **update($id_kursus, $data)**  
    Memperbarui data kursus berdasarkan `id_kursus`.
 
-5. **delete($id_kursus)**  
+6. **delete($id_kursus)**  
    Menghapus kursus dari tabel `tbl_kursus` berdasarkan `id_kursus`.
 
 ## Contoh Penggunaan
