@@ -114,7 +114,7 @@ host: Alamat host server database.
 db_name: Nama database yang akan digunakan.
 username: Username untuk mengakses database.
 password: Password untuk username tersebut
-```
+```php
     public function connect() {
         $this->conn = null;
         try {
