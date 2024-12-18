@@ -1,10 +1,10 @@
 # Praktikum Pemgrograman Web 2 - Politeknik Negeri Cilacap
 
 ## Informasi Umum
-Proyek ini merupakan bagian dari kegiatan Praktisi Mengajar batch 5, antara [Politeknik Negeri Cilacap](https://pnc.ac.id/) dengan praktisi [I Nyoman Indra Darmawan](https://nyoman.id) untuk mata kuliah Praktikum Pemgrograman Web 2
+Proyek ini merupakan tugas dalam mata kuliah Praktikum Pemrograman Web 2 sesuai dengan studi kasus yang diberikan oleh Pengampu yaitu Sistem Manajemen Kelas Online
 
 ## Deskripsi Proyek
-Proyek ini merupakan aplikasi web sederhana yang menerapkan arsitektur Model-View-Controller (MVC) dengan menggunakan konsep Pemrograman Berorientasi Objek (OOP). Aplikasi ini adalah sebagai contoh yang dapat gunakan sebagai acuan bagi masing-masing kelompok dalam mengerjakan tugas.
+Proyek ini melibatkan implementasi operasi CRUD (Create, Read, Update, Delete) untuk pengelolaan data, termasuk koneksi ke database menggunakan PDO dan pengelolaan data pada database 2C_klp6..
 
 ## Tujuan
 Tujuan dari praktikum ini adalah untuk memberikan pemahaman yang lebih baik tentang arsitektur MVC dalam pengembangan aplikasi web dan untuk meningkatkan kemampuan mahasiswa dalam menerapkan konsep OOP serta melakukan operasi CRUD (Create, Read, Update, Delete) pada data.
@@ -93,3 +93,85 @@ Jika ingin berkontribusi pada proyek ini, silakan buat branch baru dan kirim pul
 
 ## Lisensi
 Proyek ini dilisensikan under MIT License.
+
+
+```php
+<?php
+// config/database.php
+class Database {
+    private $host = '160.19.166.42';
+    private $db_name = '2C_klp6';
+    private $username = '2C_klp6';
+    private $password = 'U_23Xd1hz299OPMj';
+    private $conn;
+```
+config/database.php digunakan untuk mengatur koneksi ke database MySQL menggunakan PHP Data Objects (PDO). File ini mengelola konfigurasi host, nama database, username, dan password untuk menghubungkan ke database.
+
+Jalankan MySQL di host 160.19.166.42 dengan database 2C_klp6 yang sudah disiapkan.
+Ubah nilai dari properti yang sudah disiapkan:
+
+host: Alamat host server database (160.19.166.42).
+db_name: Nama database yang akan digunakan (2C_klp6).
+username: Username untuk mengakses database (2C_klp6).
+password: Password untuk username tersebut (U_23Xd1hz299OPMj)
+```php
+    public function connect() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            echo "Connection error: " . $e->getMessage();
+        }
+        return $this->conn;
+    }
+
+   
+}
+
+```
+Gunakan metode connect() untuk mendapatkan objek koneksi database.
+
+### Model Kursus
+File `app/models/Kursus.php` adalah bagian dari aplikasi yang menangani operasi CRUD (Create, Read, Update, Delete) pada tabel `tbl_kursus` di database. File ini menggunakan PDO untuk berinteraksi dengan database.
+```php
+<?php
+// app/models/User.php
+require_once '../config/database.php';
+
+class kursus {
+    private $db;
+
+    public function __construct() {
+        $this->db = (new Database())->connect();
+    }
+```
+
+## Method
+1. **getAlltbl_kursus**
+   ```php
+   public function getAlltbl_kursus() {
+        $query = $this->db->query("SELECT id_kursus,id_user, id_materi, judul_kursus, instruktur, deskripsi, durasi FROM tbl_kursus");
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+   ```
+   Mendapatkan semua data kursus dari tabel `tbl_kursus`.
+   
+3. **find($id)**  
+   Mencari kursus berdasarkan `id_kursus`.
+
+4. **add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi)**  
+   Menambahkan kursus baru ke tabel `tbl_kursus`.
+
+5. **update($id_kursus, $data)**  
+   Memperbarui data kursus berdasarkan `id_kursus`.
+
+6. **delete($id_kursus)**  
+   Menghapus kursus dari tabel `tbl_kursus` berdasarkan `id_kursus`.
+
+## Contoh Penggunaan
+### Inisialisasi Model
+```php
+require_once 'app/models/User.php';
+
+$kursus = new kursus();
