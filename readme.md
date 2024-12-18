@@ -182,4 +182,8 @@ $kursus = new kursus();
 
 ```
 
-**#Praktikum PWEB2**
+# PRAKTIKUM PWEB2
+### KursusController
+```php
+require_once '../app/models/Kursus.php';
+```
