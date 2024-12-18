@@ -306,6 +306,7 @@ berfugsi untuk agar saat ingin menghapus data dapat menggunkannya berdasarkan id
 // app/models/User.php
 require_once '../config/database.php';
 ```
+Berguna untuk menghubungkannya ke database, memuat konfigurasi dan koneksi
 
 
 ``` php
@@ -313,12 +314,15 @@ class kursus {
     private $db;
 }
 ```
+metode ini berfungsi untuk berinteraksi dengan table tbl_kursus, class ini mendefinisikan model untuk kursus
+
 
 ``` php
  public function __construct() {
         $this->db = (new Database())->connect();
     }
 ```
+kontruk ini menginisialisasi koneksi database saat objek dari kelas kursus dibuat, agar setiap metode dalam kelas ini dapat menggunakan koneksi yang sama
 
 ``` php
 public function getAlltbl_kursus() {
@@ -330,6 +334,7 @@ public function getAlltbl_kursus() {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 ```
+berfungs untuk mengambil semua data dari database, termasuk instruktur dan kursus terkait 
 
 
 ``` php
@@ -338,7 +343,7 @@ public function getAllUser(){
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 ```
-
+berfungsi untuk mengambil seua pengguna yang memiliki peran intrukur
 
 ``` php
  public function getAllMateri(){
@@ -347,8 +352,7 @@ public function getAllUser(){
     }
 
 ```
-
-
+mengambil semua data materi yang ada dalam database
 
 ``` php
 public function getAllKursus(){
@@ -356,7 +360,7 @@ public function getAllKursus(){
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 ```
-
+mengambil semua data yang terdapat dalam databae, dan untuk menampilkan semua kursus yang ada
 
 ``` php
 public function find($id_kursus) {
@@ -366,7 +370,7 @@ public function find($id_kursus) {
         return $query->fetch(PDO::FETCH_ASSOC);
     }
 ```
-
+metode yang berfungsi untuk mencari dan mengambil data berdasarkan if yang ada, yang memudahkan untuk mendapatkan detail tertentu saat melakukan edit
 
 
 ``` php
@@ -381,6 +385,7 @@ public function find($id_kursus) {
         $query->bindParam(':durasi', $durasi);
         return $query->execute();
     }
+berfungsi untuk menambahkan kursus baru dalam database dengan data yang diberikan
 
 ```php
 public function update($id_kursus, $data) {
@@ -397,6 +402,7 @@ public function update($id_kursus, $data) {
         return $stmt->execute();
     }
 ```
+berfungsi untuk memperbarui data yang ada dalam database berdasarkan id
 
 
 ```php
@@ -407,4 +413,7 @@ public function update($id_kursus, $data) {
         return $stmt->execute();
     }
 ```
+metode untuk hapus agar dapat menghapus data dalam database berdasarkkan id 
+
+
 
