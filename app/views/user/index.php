@@ -32,6 +32,7 @@
                 
             </tr>
         </thead>
+<<<<<<< HEAD
     <tbody>
         <?php 
         $no = 1; 
@@ -50,3 +51,36 @@
         <?php endforeach; ?>
     </tbody>
 </table>
+=======
+        <tbody>
+<ul>
+    <?php foreach ($kursus as $kursus): ?>
+       
+            <tr>
+                <td><p><?= htmlspecialchars($kursus['id_kursus']) ?> </td>
+                <td><?= htmlspecialchars($kursus['id_user']) ?></td>
+                <td><?= htmlspecialchars($kursus['id_materi']) ?></td>
+                <td> <?= htmlspecialchars($kursus['judul_kursus']) ?></td>
+                <td><?= htmlspecialchars($kursus['instruktur']) ?></td>
+                <td><?= htmlspecialchars($kursus['deskripsi']) ?></td>
+                <td><?= htmlspecialchars($kursus['durasi']) ?></td>
+                <td><a href="/user/edit/<?= $kursus['id_kursus']; ?>" class="btn btn-warning btn-sm">Edit</a> |
+                        <a href="/user/delete/<?= $kursus['id_kursus']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin?')">Delete</a>
+                    </td></td>
+             
+            
+        
+            
+            </p>
+            </tr>
+        </div>
+
+        
+    <?php endforeach; ?>
+</ul>
+
+
+</tbody>
+
+</body>
+>>>>>>> a40eea4b550db65386708ff810de9f23a38ef61c
