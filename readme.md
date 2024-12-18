@@ -176,4 +176,78 @@ require_once 'app/models/User.php';
 
 $kursus = new kursus();
 ```
-qqqqqqq
+UserController
+UserController adalah sebuah controller dalam aplikasi PHP MVC sederhana yang bertanggung jawab untuk mengelola operasi CRUD (Create, Read, Update, Delete) pada data pengguna. Controller ini menghubungkan model User dengan view terkait untuk memproses dan menampilkan data. 
+
+Terdapat beberapa metode yang digunakan, yaitu :
+Index: Menampilkan daftar semua pengguna.
+Create: Menampilkan form untuk menambahkan pengguna baru.
+Store: Menyimpan data pengguna baru ke dalam database.
+Edit: Menampilkan form untuk mengedit data pengguna.
+Update: Memperbarui data pengguna yang ada.
+Delete: Menghapus data pengguna dari database.
+
+1. Menampilkan Daftar Pengguna
+Metode index() digunakan untuk mendapatkan semua data pengguna dari model User dan menampilkannya di view index.php.
+```php
+public function index() {
+    $user = $this->UserModel->getAlltbl_user();
+    require_once '../app/views/user/index.php';
+}
+```
+2. Menambahkan Pengguna Baru
+Menampilkan Form
+Metode create() digunakan untuk menampilkan form penambahan pengguna baru.
+```php
+public function create() {
+    require_once '../app/views/user/create.php';
+}
+```
+Menyimpan Data
+Metode store() digunakan untuk memproses data dari form dan menyimpannya ke database.
+```php
+public function store() {
+    $nama = $_POST['nama'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $peran = $_POST['peran'];
+    $this->UserModel->add($nama, $email, $password, $peran);
+    header('Location: /user/index');
+}
+```
+3. Mengedit Pengguna
+Menampilkan Form Edit
+Metode edit() digunakan untuk menampilkan form edit dengan data pengguna yang akan diubah.
+
+php
+```php
+public function edit($id_user) {
+    $user = $this->UserModel->find($id_user);
+    require_once '../app/views/user/edit.php';
+}
+```
+Memperbarui Data
+Metode update() digunakan untuk memperbarui data pengguna berdasarkan ID.
+```php
+public function update($id_user, $data) {
+    $updated = $this->UserModel->update($id_user, $data);
+    if ($updated) {
+        header("Location: /user/index");
+    } else {
+        echo "Failed to update user.";
+    }
+}
+```
+4. Menghapus Pengguna
+Metode delete() digunakan untuk menghapus data pengguna berdasarkan ID.
+```php
+public function delete($id_user) {
+    $deleted = $this->UserModel->delete($id_user);
+    if ($deleted) {
+        header("Location: /user/index");
+    } else {
+        echo "Failed to delete user.";
+    }
+}
+```
+
