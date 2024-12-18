@@ -187,3 +187,115 @@ $kursus = new kursus();
 ```php
 require_once '../app/models/Kursus.php';
 ```
+Berfungsi untuk memuat model kursus, controller iniagar dapat menggunakkan fungsi-fungsi yang ada di dalam model untuk berinteraksi dengan database
+
+```php
+class KursusController {
+    private $kursusModel;
+
+}
+```
+
+Berfungsi untuk membuat class untuk menyimpan model kursus
+
+```php
+public function __construct() {
+        $this->kursusModel = new Kursus();
+    }
+```
+construct yang berfungsi untuk menginisialisasi model kursus, konstruktor diaktifkan saat controller dibuat agar dapat menggunakan semua metode yang ada
+
+```php
+public function home() {
+        require_once '../app/views/kursus/index.php';
+    }
+```
+Metode ini dibuat untuk agar dapat kembali ke halaman utama atau index
+
+```php
+ public function index() {
+        require_once '../app/views/kursus/index.php';
+    }
+```
+Metode ini dibuat untuk memuat tampilan halaman utama
+
+```php
+public function simpan() {
+        $kursus = $this->kursusModel->getAlltbl_kursus(); 
+        require_once '../app/views/kursus/index.php';
+    }
+```
+metode ini dibuat untuk mengambil semua data kursus, memudahkan pengguna untuk melihat semua data yang ada di dalam table kursus
+
+```php
+ public function halaman_kursus() {
+        $kursuss = $this->kursusModel->getAlltbl_kursus(); 
+        require_once '../app/views/kursus/halaman_kursus.php';
+    }
+```
+metod yang dibuat untuk menampilkan halaman yang menampilkan table tabel kursus, memudahkan mengakses lebih mudah
+
+```php
+public function create() {
+        $users = $this->kursusModel->getAllUser(); // Mengambil semua pengguna
+        $materi = $this->kursusModel->getAllMateri(); // Mengambil semua materi
+        $kursus = $this->kursusModel->getAlltbl_kursus(); // Mengambil semua kursus
+        require_once '../app/views/kursus/create.php';
+    }
+
+```
+
+berfunngsi untuk menyediakan semua infomasi yang dibutuhkan pennguna agar dapat mengisi form dengan benar
+
+```php
+public function store() {
+        // Melakukan pengambilan data
+        $id_kursus = $_POST['id_kursus'];
+        $id_user = $_POST['id_user'];
+        $id_materi = $_POST['id_materi'];
+        $judul_kursus = $_POST['judul_kursus'];
+        $instruktur = $_POST['instruktur'];
+        $deskripsi = $_POST['deskripsi'];
+        $durasi = $_POST['durasi'];
+
+        // Menambahkan kursus baru ke dalam database
+        $this->kursusModel->add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi);
+        header('Location: /kursus/halaman_kursus'); // Redirect ke halaman kursus
+    }
+```
+Memastikan bahwa data yang dimasukkan oleh pengguna tersimpan dengan baik dan pengguna diarahkan kembali ke halaman daftar kursus untuk melihat hasilnya
+
+```php
+public function edit($id_kursus) {
+        $kursus = $this->kursusModel->find($id_kursus); // Untuk mencari kursus berdasarkan ID
+        $users = $this->kursusModel->getAllUser(); // untuk mengambil semua pengguna
+        $materis = $this->kursusModel->getAllMateri(); // untuk meengambil semua materi
+        require_once __DIR__ . '/../views/kursus/edit.php'; // Memuat formulir edit
+    }
+```
+Metode ini dibuat untuk mengambil data kursus berdasarkan ID untuk ditampilkan di formulir edit dan memudahkan pengguna untuk memperbarui informasi kursus yang sudah ada.
+
+```php
+public function update($id_kursus, $data) {
+        $updated = $this->kursusModel->update($id_kursus, $data); // Memperbarui kursus di database
+        if ($updated) {
+            header("Location: /kursus/halaman_kursus"); // Redirect ke halaman kursus
+        } else {
+            echo "Gagal memperbarui kursus."; // Menampilkan pesan kesalahan
+        }
+    }
+```
+berfungsi untuk memperbarui data kursus di database dengan data terbaru daroi formulir edit lalu menjaga data tetap terkni dan baru atau update
+
+```php
+public function delete($id_kursus) {
+        $deleted = $this->kursusModel->delete($id_kursus); // Menghapus kursus dari database
+        if ($deleted) {
+            header("Location: /kursus/halaman_kursus"); // Redirect ke halaman kursus
+        } else {
+            echo "Gagal menghapus kursus."; // Menampilkan pesan kesalahan
+        }
+    }
+```
+
+berfugsi untuk agar saat ingin menghapus data dapat menggunkannya berdasarkan id yang diberikan, pennguna dapat mengelola daftar kursus dengan menggunkan hapus untuk tidak lagi diperlukan
