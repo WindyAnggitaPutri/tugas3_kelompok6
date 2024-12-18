@@ -238,3 +238,90 @@ tombol update mengirimkan perubahan data ke endpoint /materi/update/(id_materi) 
 menggunakan table dinamis yang menampilkan ID materi, Judul Materi, Konten, Kursus Terkait dan aksi hapus dan edit. tombol edit mengarahkann ke halaman edit untuk memperbarui data, dan tombol hapus untuk menghapus data materi dari database.
 
 foreach ($materis as $materi) looping dta yang diambi dari database untuk ditampikan dalam bentuk table.
+
+```php
+<?php
+// app/models/User.php
+require_once '../config/database.php';
+
+class Materi {
+    private $db;
+    // mengkoneksikan database dalam file database.php
+    public function __construct() {
+        $this->db = (new Database())->connect();
+    }
+```
+require_once untuk mengimpor database.php yang berisi koneksi ke daatabase, berisi kelas database dengan metode connect() untuk membuat koneksi ke database dengan menggunakan PDO.
+
+membuat kelas dengan nama Materi menggunakan properti $db untuk menyimpan objek koneksi ke database
+metode __construct() dipanggil secara otomatis ketika objek dari kelas materi dibuat
+
+new Database() membuat objek baru dari kelas Database yang didefinisikan di database.php
+
+```php
+public function getAllMateri() {
+        $query = $this->db->query("SELECT * FROM tbl_materi");
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+```
+public function getAllMateri() dapat diakses diluar kelas memiliki fungsi mengambil semua kolom data dari tbl_materi 
+
+fetchAll(PDO::FETCH_ASSOC) digunakan mengambil semua baris dalam bentuk array asosiatiif.
+
+```php
+public function find($id_materi) {
+        $query = $this->db->prepare("SELECT * FROM tbl_materi WHERE id_materi = :id_materi");
+        $query->bindParam(':id_materi', $id_materi, PDO::PARAM_INT); //mengikat parameter
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+```
+metode public find menerima parameter $id_materi yang di cari dalam tbl_materi
+
+SQL mengambil semua kolom (*) dari tbl_materi dimana id_materi cocok dengan nilai paarameter :id_materi
+
+bindParam() mengikat nilai ke placeholder :id_materi
+
+execute(), Metode ini menjalankan query SQL yang telah dipersiapkan dengan nilai parameter yang sudah diikat.
+
+```php
+public function add($id_materi, $judul_materi, $konten, $kursus_terkait) {
+        $query = $this->db->prepare("INSERT INTO tbl_materi (id_materi, judul_materi, konten, kursus_terkait) VALUES (:id_materi, :judul_materi, :konten, :kursus_terkait)");
+        $query->bindParam(':id_materi', $id_materi);
+        $query->bindParam(':judul_materi', $judul_materi);
+        $query->bindParam(':konten', $konten);
+        $query->bindParam(':kursus_terkait', $kursus_terkait);
+        return $query->execute();
+    }
+```
+metode public add menerima parameter $id_materi, $judul_materi, $konten, $kursus_terkait.
+
+mengambil semua kolom(*) dari tbl_materi 
+execute() Menjalankan query SQL yang telah dipersiapkan dengan nilai parameter yang telah diikat.
+return, Mengembalikan nilai true jika eksekusi berhasil, atau false jika gagal.
+
+```php
+public function update( $id_materi, $data) {
+        $query = "UPDATE tbl_materi SET judul_materi = :judul_materi, konten = :konten, kursus_terkait= :kursus_terkait WHERE id_materi = :id_materi";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':judul_materi', $data['judul_materi']);
+        $stmt->bindParam(':konten', $data['konten']);
+        $stmt->bindParam(':kursus_terkait', $data['kursus_terkait']);
+        $stmt->bindParam(':id_materi', $id_materi);
+        return $stmt->execute();
+    }
+```
+public function update digunakn sebagai metode melakukan operasi pembaharuan pada database.Fungsi ini menerima ID dari record yang akan diperbarui ($id_materi) dan array data baru ($data) yang berisi nilai-nilai yang akan diupdate pada kolom judul_materi, konten, dan kursus_terkait. Fungsi ini menyiapkan dan menjalankan query SQL, memperbarui record di mana id_materi sesuai dengan ID yang diberikan.
+
+bindParam() digunakan untuk mengikat nilai dari array $data dan $id_materi ke placeholder pada query.
+
+```php
+   public function delete($id_materi) {
+        $query = "DELETE FROM tbl_materi WHERE id_materi = :id_materi";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':id_materi', $id_materi);
+        return $stmt->execute();
+    }
+}
+```
+public function delete adalah metode yang digunakn untuk menghapus data dari database dengan mengambil id_materi yang akan dihapus.  Fungsi ini menerima ID dari materi yang akan dihapus ($id_materi), menyiapkan dan menjalankan query SQL untuk menghapus record yang memiliki ID tersebut. Jika penghapusan berhasil, fungsi ini mengembalikan true; jika tidak, akan mengembalikan false.
