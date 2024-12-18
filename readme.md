@@ -105,15 +105,15 @@ class Database {
     private $password = 'U_23Xd1hz299OPMj';
     private $conn;
 ```
-**config database digunakan untuk mengatur koneksi ke database MySQL menggunakan PHP Data Objects (PDO). File ini mengelola konfigurasi host, nama database, username, dan password untuk menghubungkan aplikasi Anda ke database.
+config/database.php digunakan untuk mengatur koneksi ke database MySQL menggunakan PHP Data Objects (PDO). File ini mengelola konfigurasi host, nama database, username, dan password untuk menghubungkan ke database.
 
-Pastikan MySQL berjalan di host 160.19.166.42 dengan database 2C_klp6 yang sudah disiapkan.
-Ubah nilai dari properti berikut jika diperlukan:
+Jalankan MySQL di host 160.19.166.42 dengan database 2C_klp6 yang sudah disiapkan.
+Ubah nilai dari properti yang sudah disiapkan:
 
-host: Alamat host server database.
-db_name: Nama database yang akan digunakan.
-username: Username untuk mengakses database.
-password: Password untuk username tersebut
+host: Alamat host server database (160.19.166.42).
+db_name: Nama database yang akan digunakan (2C_klp6).
+username: Username untuk mengakses database (2C_klp6).
+password: Password untuk username tersebut (U_23Xd1hz299OPMj)
 ```php
     public function connect() {
         $this->conn = null;
@@ -132,3 +132,28 @@ password: Password untuk username tersebut
 ```
 Gunakan metode connect() untuk mendapatkan objek koneksi database.
 
+### Model Kursus
+File `app/models/User.php` adalah bagian dari aplikasi yang menangani operasi CRUD (Create, Read, Update, Delete) pada tabel `tbl_kursus` di database. File ini menggunakan PDO untuk berinteraksi dengan database.
+
+## Method
+1. **getAlltbl_kursus**  
+   Mendapatkan semua data kursus dari tabel `tbl_kursus`.
+   
+2. **find($id)**  
+   Mencari kursus berdasarkan `id_kursus`.
+
+3. **add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi)**  
+   Menambahkan kursus baru ke tabel `tbl_kursus`.
+
+4. **update($id_kursus, $data)**  
+   Memperbarui data kursus berdasarkan `id_kursus`.
+
+5. **delete($id_kursus)**  
+   Menghapus kursus dari tabel `tbl_kursus` berdasarkan `id_kursus`.
+
+## Contoh Penggunaan
+### Inisialisasi Model
+```php
+require_once 'app/models/User.php';
+
+$kursus = new kursus();
