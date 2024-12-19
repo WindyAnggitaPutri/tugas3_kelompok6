@@ -749,7 +749,7 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
 ```
 Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman_kursus) dimana akan memberikan tampilan menarik
 
-``html
+```html
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
@@ -825,5 +825,84 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
         <p class="mb-0">&copy; 2024 Dashboard Inc. All rights reserved.</p>
     </footer>
 ```
+
+
 digunakan untuk memberikan tampilan berupa navbar yang diberikan link dan dapat mengarah ke halaman tertentu yang telah ditentukan
 
+### Routes 
+```php
+require_once 'app/controllers/UserController.php';
+require_once 'app/controllers/MateriController.php';
+require_once 'app/controllers/KursusController.php';
+
+$controllerUser = new UserController();
+$controllerMateri = new MateriController();
+$controllerKursus = new KursusController();
+
+$url = $_SERVER['REQUEST_URI'];
+$requestMethod = $_SERVER['REQUEST_METHOD'];
+
+// milik kursus
+if ($url == '/kursus/halaman_kursus' ) {
+    $controllerKursus->halaman_kursus();
+} elseif ($url == '/Kursus/index' ) {
+    $controllerKursus->index();
+}elseif ($url == '/Kursus/index' ) {
+    $controllerKursus->home();
+} elseif ($url == '/'){
+    $controllerKursus ->index(); 
+}elseif ($url == '/kursus/halaman_kursus' ) {
+    $controllerKursus->simpan();
+}elseif ($url == '/kursus/create' && $requestMethod == 'GET') {
+    $controllerKursus->create();
+} elseif ($url == '/kursus/store' && $requestMethod == 'POST') {
+    $controllerKursus->store();
+} elseif (preg_match('/\/kursus\/edit\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
+    $userId = $matches[1];
+    $controllerKursus->edit($userId);
+} elseif (preg_match('/\/kursus\/update\/(\d+)/', $url, $matches) && $requestMethod == 'POST') {
+    $userId = $matches[1];
+    $controllerKursus->update($userId, $_POST);
+} elseif (preg_match('/\/kursus\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
+    $userId = $matches[1];
+    $controllerKursus->delete($userId);
+} elseif ($url == '/materi/halaman_materi' ) {
+    $controllerMateri->halaman_materi();
+} elseif ($url == '/materi/kursus' ) {
+    $controllerMateri->simpan();
+}elseif ($url == '/materi/create' && $requestMethod == 'GET') {
+    $controllerMateri->create();
+} elseif ($url == '/materi/store' && $requestMethod == 'POST') {
+    $controllerMateri->store();
+} elseif (preg_match('/\/materi\/edit\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
+    $materiId = $matches[1];
+    $controllerMateri->edit($materiId);
+} elseif (preg_match('/\/materi\/update\/(\d+)/', $url, $matches) && $requestMethod == 'POST') {
+    $materiId = $matches[1];
+    $controllerMateri->update($materiId, $_POST);
+} elseif (preg_match('/\/materi\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
+    $materiId = $matches[1];
+    $controllerMateri->delete($materiId);
+} elseif ($url == '/user/halaman_user' ) {
+    $controllerUser->halaman_user();
+} elseif ($url == '/user/kursus' ) {
+    $controllerUser->simpan();
+}elseif ($url == '/user/create' && $requestMethod == 'GET') {
+    $controllerUser->create();
+} elseif ($url == '/user/store' && $requestMethod == 'POST') {
+    $controllerUser->store();
+} elseif (preg_match('/\/user\/edit\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
+    $userId = $matches[1];
+    $controllerUser->edit($userId);
+} elseif (preg_match('/\/user\/update\/(\d+)/', $url, $matches) && $requestMethod == 'POST') {
+    $userId = $matches[1];
+    $controllerUser->update($userId, $_POST);
+} elseif (preg_match('/\/user\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
+    $userId = $matches[1];
+    $controllerUser->delete($userId);
+} else {
+    http_response_code(404);
+    echo "hihi";
+}
+```
+digunakan untuk membuat link yang dapat mengarahkan file filenya, yang dapat mengarahkan berbagai permintaan ke controller yang sesuai berdasarkan url yang telah dibuat.
