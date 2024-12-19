@@ -183,7 +183,7 @@ $kursus = new kursus();
 ```
 
 # PRAKTIKUM PWEB2
-## KURSUS
+## 1. KURSUS
 ### KursusController
 ```php
 require_once '../app/models/Kursus.php';
@@ -249,19 +249,16 @@ public function create() {
 berfunngsi untuk menyediakan semua infomasi yang dibutuhkan pennguna agar dapat mengisi form dengan benar
 
 ```php
-public function store() {
-        // Melakukan pengambilan data
+ public function store() {
         $id_kursus = $_POST['id_kursus'];
         $id_user = $_POST['id_user'];
         $id_materi = $_POST['id_materi'];
-        $judul_kursus = $_POST['judul_kursus'];
-        $instruktur = $_POST['instruktur'];
+        // $judul_kursus = $_POST['judul_kursus'];
+        // $instruktur = $_POST['instruktur'];
         $deskripsi = $_POST['deskripsi'];
         $durasi = $_POST['durasi'];
-
-        // Menambahkan kursus baru ke dalam database
-        $this->kursusModel->add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi);
-        header('Location: /kursus/halaman_kursus'); // Redirect ke halaman kursus
+        $this->kursusModel->add($id_kursus, $id_user, $id_materi, $deskripsi, $durasi);
+        header('Location: /kursus/halaman_kursus');
     }
 ```
 Memastikan bahwa data yang dimasukkan oleh pengguna tersimpan dengan baik dan pengguna diarahkan kembali ke halaman daftar kursus untuk melihat hasilnya
@@ -278,23 +275,24 @@ Metode ini dibuat untuk mengambil data kursus berdasarkan ID untuk ditampilkan d
 
 ```php
 public function update($id_kursus, $data) {
-        $updated = $this->kursusModel->update($id_kursus, $data); // Memperbarui kursus di database
+        $updated = $this->kursusModel->update($id_kursus, $data);
         if ($updated) {
-            header("Location: /kursus/halaman_kursus"); // Redirect ke halaman kursus
+            header("Location: /kursus/halaman_kursus"); // Redirect to user list
         } else {
-            echo "Gagal memperbarui kursus."; // Menampilkan pesan kesalahan
+            echo "Failed to update kursus.";
         }
     }
 ```
-berfungsi untuk memperbarui data kursus di database dengan data terbaru daroi formulir edit lalu menjaga data tetap terkni dan baru atau update
+berfungsi untuk memperbarui data kursus di database dengan data terbaru dari formulir edit lalu menjaga data tetap terkini dan baru atau update
 
 ```php
-public function delete($id_kursus) {
-        $deleted = $this->kursusModel->delete($id_kursus); // Menghapus kursus dari database
+// Process delete request
+    public function delete($id_kursus) {
+        $deleted = $this->kursusModel->delete($id_kursus);
         if ($deleted) {
-            header("Location: /kursus/halaman_kursus"); // Redirect ke halaman kursus
+            header("Location: /kursus/halaman_kursus"); // Redirect to user list
         } else {
-            echo "Gagal menghapus kursus."; // Menampilkan pesan kesalahan
+            echo "Failed to delete kursus.";
         }
     }
 ```
@@ -375,13 +373,13 @@ metode yang berfungsi untuk mencari dan mengambil data berdasarkan if yang ada, 
 
 
 ``` php
-  public function add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi) {
-        $query = $this->db->prepare("INSERT INTO tbl_kursus (id_kursus, id_user, id_materi, judul_kursus, instruktur, deskripsi, durasi) VALUES (:id_kursus ,:id_user, :id_materi, :judul_kursus, :instruktur, :deskripsi, :durasi)");
+  public function add($id_kursus, $id_user, $id_materi, $deskripsi, $durasi) {
+        $query = $this->db->prepare("INSERT INTO tbl_kursus (id_kursus, id_user, id_materi,  deskripsi, durasi) VALUES (:id_kursus ,:id_user, :id_materi, :deskripsi, :durasi)");
         $query->bindParam(':id_kursus', $id_kursus);
         $query->bindParam(':id_user', $id_user);
         $query->bindParam(':id_materi', $id_materi);
-        $query->bindParam(':judul_kursus', $judul_kursus);
-        $query->bindParam(':instruktur', $instruktur);
+        // $query->bindParam(':judul_kursus', $judul_kursus);
+        // $query->bindParam(':instruktur', $instruktur);
         $query->bindParam(':deskripsi', $deskripsi);
         $query->bindParam(':durasi', $durasi);
         return $query->execute();
@@ -390,17 +388,18 @@ berfungsi untuk menambahkan kursus baru dalam database dengan data yang diberika
 
 ```php
 public function update($id_kursus, $data) {
-        $query = "UPDATE tbl_kursus SET id_kursus = :id_kursus, id_user = :id_user, id_materi = :id_materi, judul_kursus = :judul_kursus, instruktur = :instruktur, deskripsi = :deskripsi, durasi = :durasi WHERE id_kursus = :id_kursus";
+        $query = "UPDATE tbl_kursus SET  id_user = :id_user, id_materi = :id_materi, deskripsi = :deskripsi, durasi = :durasi WHERE id_kursus = :id_kursus";
         $stmt = $this->db->prepare($query);
         
-        // $stmt->bindParam(':id_kursus', $data['id_kursus']);
+        $stmt->bindParam(':id_kursus', $id_kursus);
         $stmt->bindParam(':id_user', $data['id_user']);
         $stmt->bindParam(':id_materi', $data['id_materi']);
-        $stmt->bindParam(':judul_kursus', $data['judul_kursus']);
-        $stmt->bindParam(':instruktur', $data['instruktur']);
+        // $stmt->bindParam(':judul _kursus', $data['judul_kursus']);
+        // $stmt->bindParam(':instruktur', $data['instruktur']);
         $stmt->bindParam(':deskripsi', $data['deskripsi']);
         $stmt->bindParam(':durasi', $data['durasi']);
         return $stmt->execute();
+    }
     }
 ```
 berfungsi untuk memperbarui data yang ada dalam database berdasarkan id
@@ -417,8 +416,22 @@ berfungsi untuk memperbarui data yang ada dalam database berdasarkan id
 metode untuk hapus agar dapat menghapus data dalam database berdasarkkan id 
 
 ### Create (Viewas)
+
 ```php
- <form action="/kursus/store" method="POST" class="bg-white p-4 rounded shadow">
+<!-- app/views/user/create.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Materi Baru</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center text-primary mb-4">Tambah Kursus Baru</h2>
+        <form action="/kursus/store" method="POST" class="bg-white p-4 rounded shadow">
            
             <div class="mb-3">
                 <label for="id_user" class="form-label">ID User:</label>
@@ -426,7 +439,7 @@ metode untuk hapus agar dapat menghapus data dalam database berdasarkkan id
                     <option value="">Pilih User</option>
                     <?php foreach ($users as $user): ?>
                         <option value="<?php echo $user['id_user']; ?>" data-user="<?php echo $user['nama']; ?>">
-                            <?php echo htmlspecialchars($user['id_user']); ?>
+                            <?php echo htmlspecialchars($user['nama']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -438,18 +451,18 @@ metode untuk hapus agar dapat menghapus data dalam database berdasarkkan id
                     <option value="">ID Materi</option>
                     <?php foreach ($materi as $materi): ?>
                         <option value="<?php echo $materi['id_materi']; ?>" data-materi="<?php echo $materi['kursus_terkait']; ?>">
-                            <?php echo htmlspecialchars($materi['id_materi']); ?>
+                            <?php echo htmlspecialchars($materi['kursus_terkait']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" style="display: none;">
                 <label for="judul_kursus" class="form-label">Judul Kursus :</label>
                 <input type="text" name="judul_kursus" id="judul_kursus" class="form-control" placeholder="Masukkan Judul Instruksi" readonly>
                
             </div>
-            <div class="mb-3">
+            <div class="mb-3" style="display: none;">
                 <label for="instruktur" class="form-label">Instruktur:</label>
                 <input type="text" name="instruktur" id="instruktur" class="form-control" placeholder="Masukkan nama instruksi" readonly>
             </div>
@@ -466,14 +479,13 @@ metode untuk hapus agar dapat menghapus data dalam database berdasarkkan id
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
-```
-Code di atas dibuat untuk menampilkan form input yang dimana data yang di inputkan tersebut dapat menambahkan data ke dalam database secara otomatis karena sudah terhubung dengan database
+    </div>
 
-```php
- <script>
-       // Menambahkan event listener untuk elemen dengan ID 'id_user'
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
         document.getElementById('id_user').addEventListener('change', function(){
-         // Mendapatkan opsi yang dipilih dari dropdown
             const selectedOption = this.options[this.selectedIndex];
 
             const namaUser = selectedOption.getAttribute('data-user');
@@ -482,10 +494,7 @@ Code di atas dibuat untuk menampilkan form input yang dimana data yang di inputk
  
         });
     </script>
-```
-code di atas dibuat dengan tujuan untuk menampilja nama instruktur secara otomatis ketika pengguna memilih dari dropdown id_user yang dimana artinya instruktutr tidak perlu menambhkan secara manual nama namanya
 
-```php
 <script>
         document.getElementById('id_materi').addEventListener('change', function(){
             const selectedOption = this.options[this.selectedIndex];
@@ -495,7 +504,323 @@ code di atas dibuat dengan tujuan untuk menampilja nama instruktur secara otomat
             document.getElementById('judul_kursus').value = namaMateri || '';
         });
     </script>
+</body>
+</html>
 ```
+Metode yang digunakan pada file create.php ini diantaranya sebagai berikut
+Dropdown Dinamis:
+Dropdown ID User mengisi otomatis kolom Instruktur berdasarkan pilihan user.
+Dropdown ID Materi mengisi otomatis kolom Judul Kursus berdasarkan pilihan materi.
+Form Responsif:
+Didukung oleh Bootstrap 5, memastikan form terlihat baik di berbagai ukuran layar.
+Validasi:
+Atribut required digunakan pada input form untuk memastikan data yang wajib diisi tidak kosong.
+Keamanan:
+Data yang ditampilkan melalui PHP menggunakan htmlspecialchars() untuk menghindari serangan XSS.
+Struktur Input Form
+ID User:
+Dropdown untuk memilih user.
+Kolom Instruktur otomatis diisi dengan nama user yang dipilih.
+ID Materi:
+Dropdown untuk memilih materi.
+Kolom Judul Kursus otomatis diisi dengan nama kursus terkait.
+Deskripsi:
+Input teks area untuk memasukkan deskripsi kursus.
+Durasi:
+Input teks untuk memasukkan durasi kursus.
+Tombol Simpan:
+Mengirimkan data ke URL /kursus/store melalui metode POST.
+Dependensi
+Bootstrap 5:
+CSS dan JS untuk tampilan dan interaktivitas modern.
+CDN digunakan untuk memuat file Bootstrap:
+Bootstrap CSS
+Bootstrap JS
+Cara Kerja JavaScript
+Dropdown ID User:
+Event listener mendeteksi perubahan pada dropdown.
+Atribut data-user dari opsi yang dipilih digunakan untuk mengisi kolom Instruktur secara otomatis.
+Dropdown ID Materi:
+Event listener mendeteksi perubahan pada dropdown.
+Atribut data-materi dari opsi yang dipilih digunakan untuk mengisi kolom Judul Kursus secara otomatis.
+
+#Edit.php
+```php
+<!-- app/views/user/edit.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Materi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center text-primary mb-4">Edit Kursus</h2>
+        <form action="/kursus/update/<?php echo $kursus['id_kursus']; ?>" method="POST" class="bg-white p-4 rounded shadow">
+        <div class="mb-3">      
+             <label for="id_user" class="form-label">Instruktur :</label>
+                <select name="id_user" id="id_user" class="form-control" required>
+                   <?php foreach ($users as $user): ?>
+                     <option value="<?php echo $user['id_user']; ?>" 
+                          data-user="<?php echo $user['nama']; ?>" 
+                          <?php echo ($user['id_user'] == $kursus['id_user']) ? 'selected' : ''; ?>>
+                          <?php echo htmlspecialchars($user['nama']); ?>
+                     </option>
+                     <?php endforeach; ?>
+                </select>
+         </div>
+         <div class="mb-3" >
+            <label for="id_materi" class="form-label">Judul Kursus:</label>
+                <select name="id_materi" id="id_materi" class="form-control" required>
+                    <?php foreach ($materis as $materi): ?>
+                        <option value="<?php echo $materi['id_materi']; ?>" 
+                            data-user="<?php echo $materi['kursus_terkait']; ?>" 
+                            <?php echo ($materi['id_materi'] == $kursus['id_materi']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($materi['kursus_terkait']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+         </div>
+         <div class="mb-3" style="display: none;">
+                <label for="judul_kursus" class="form-label">Judul Kursus :</label>
+                <input type="text" name="judul_kursus" id="judul_kursus" class="form-control"  readonly value="<?php echo $kursus['judul_kursus']; ?>" readonly>
+          </div>
+         <div class="mb-3"style="display: none;">
+                <label for="instruktur" class="form-label">Instruksi :</label>
+                <input type="text" name="instruktur" id="instruktur" class="form-control"    value="<?php echo $kursus['instruktur']; ?>" readonly>
+         </div>
+         <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi :</label>
+                <textarea name="deskripsi" id="deskripsi" class="form-control" required>
+                   <?php echo isset($kursus['deskripsi']) ? htmlspecialchars($kursus['deskripsi'], ENT_QUOTES, 'UTF-8') : ''; ?>
+                </textarea>
+         </div>
+         <div class="mb-3">
+                <label for="durasi" class="form-label">Durasi :</label>
+                <input type="text" name="durasi" id="durasi" class="form-control"  value="<?php echo $kursus['durasi']; ?>"   required>
+         </div>
+         <div class="text-center">
+                <button href="kursus/halaman_kursus" type="submit" class="btn btn-primary">Update</button>
+                <a href="/kursus/halaman_kursus" class="btn btn-secondary">Back to List</a>
+         </div>
+         </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('id_user').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaUser = selectedOption.getAttribute('data-user');
+
+            document.getElementById('instruktur').value = namaUser || '';
+
+        });
+    </script>
+
+    <script>
+        document.getElementById('id_materi').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaMateri = selectedOption.getAttribute('data-materi');
+
+            document.getElementById('judul_kursus').value = namaMateri || '';
+        });
+    </script>
+</body>
+</html>
+```
+File ini adalah halaman web yang digunakan untuk mengedit data kursus yang sudah ada dalam sistem. Halaman ini dirancang menggunakan HTML, PHP, dan Bootstrap 5 untuk memberikan tampilan yang responsif dan fitur interaktif untuk mempermudah pengeditan data kursus.
+
+Fitur Utama
+Dropdown Dinamis:
+Dropdown Instruktur otomatis mengisi kolom Instruksi berdasarkan pilihan user.
+Dropdown Judul Kursus otomatis mengisi kolom Judul Kursus berdasarkan pilihan materi.
+Form dengan Data Awal:
+Data yang sudah ada sebelumnya ditampilkan secara otomatis di form untuk diedit.
+Validasi:
+Atribut required digunakan untuk memastikan semua data wajib diisi.
+Navigasi:
+Tombol Update untuk menyimpan perubahan.
+Tombol Back to List untuk kembali ke halaman daftar kursus.
+Struktur Input Form
+Instruktur:
+Dropdown yang terisi dengan daftar instruktur.
+Kolom Instruksi otomatis terisi berdasarkan instruktur yang dipilih.
+Judul Kursus:
+Dropdown yang terisi dengan daftar materi.
+Kolom Judul Kursus otomatis terisi berdasarkan materi yang dipilih.
+Deskripsi:
+Input teks area untuk memasukkan deskripsi kursus.
+Durasi:
+Input teks untuk memasukkan durasi kursus.
+Tombol:
+Update: Mengirimkan data ke endpoint /kursus/update/{id_kursus}.
+Back to List: Mengarahkan kembali ke halaman daftar kursus.
+
+# halaman_kursus.php
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Kursus Online</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            background-color: #f0f8ff; /* Light blue background */
+        }
+        .navbar {
+            background-color: #007bff; /* Primary blue */
+        }
+        .card {
+            border: none;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .btn-primary {
+            background-color: #0056b3;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #004494;
+        }
+        .content {
+            flex: 1; /* Buat konten mengisi ruang yang tersisa */
+        }
+        footer {
+            width: 100%;
+            background-color: #007bff; /* Footer warna biru */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand">Sistem Manajemen Kursus Online</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/halaman_user">User</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/materi/halaman_materi">Materi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/kursus/halaman_kursus">Kursus</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <div class="content">
+        <div class="container mt-4">
+            <h2 class="text-center mb-4" style="color:rgb(80, 156, 238);">Daftar Kursus</h2>
+            <a href="/kursus/create" class="btn btn-primary mb-3">Tambah Kursus Baru</a>
+            <table class="table table-bordered table-hover" style="border: 2px solid rgb(80, 156, 238);">
+                <thead style="background-color:rgb(80, 156, 238); color: white;">
+                    <tr>
+                        <!-- <th>Id Kursus</th> -->
+                        <!-- <th>Id User</th>
+                        <th>Id Materi</th> -->
+                        <th>Judul Kursus</th>
+                        <th>Instruktur</th>
+                        <th>Deskripsi</th>
+                        <th>Durasi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($kursuss as $kursus): ?>
+                        <tr>
+                        <!-- <td><?= $id_kursus++; ?> -->
+                        <!-- <td><?= htmlspecialchars($kursus['id_kursus']) ?></td> -->
+                            <!-- <td><?= htmlspecialchars($kursus['id_user']) ?></td>
+                            <td><?= htmlspecialchars($kursus['id_materi']) ?></td> -->
+                            <td><?= htmlspecialchars($kursus['judul_kursus']) ?></td>
+                            <td><?= htmlspecialchars($kursus['instruktur']) ?></td>
+                            <td><?= htmlspecialchars($kursus['deskripsi']) ?></td>
+                            <td><?= htmlspecialchars($kursus['durasi']) ?></td>
+                            <td>
+                                <a href="/kursus/edit/<?= $kursus['id_kursus']; ?>" class="btn btn-warning btn-sm">Edit</a> |
+                                <a href="/kursus/delete/<?= $kursus['id_kursus']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin?')">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p class="mb-0">&copy; 2024 Dashboard Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+```
+File ini adalah halaman utama untuk sistem manajemen kursus online. Halaman ini menampilkan daftar kursus yang tersedia serta menyediakan fitur untuk menambah, mengedit, dan menghapus kursus. Desain halaman ini menggunakan framework Bootstrap 5 dengan tambahan CSS custom untuk memberikan pengalaman antarmuka yang modern dan responsif.
+
+Fitur Utama
+Navbar Navigasi:
+Menyediakan menu navigasi untuk halaman:
+Home
+User
+Materi
+Kursus
+Tabel Daftar Kursus:
+Menampilkan daftar kursus dalam bentuk tabel dengan kolom:
+Judul Kursus
+Instruktur
+Deskripsi
+Durasi
+Aksi (Edit & Delete)
+Tombol Tambah Kursus:
+Memungkinkan pengguna untuk menambahkan kursus baru dengan mengarahkan ke halaman pembuatan kursus.
+Aksi Edit dan Delete:
+Edit: Mengarahkan pengguna ke halaman pengeditan kursus tertentu.
+Delete: Menghapus kursus dengan konfirmasi untuk mencegah kesalahan.
+Struktur Halaman
+Navbar:
+Posisi di bagian atas halaman.
+Warna biru dengan teks putih untuk tampilan profesional.
+Opsi navigasi menuju halaman lain yang relevan.
+Konten Utama:
+Tabel daftar kursus yang menampilkan informasi kursus.
+Tombol tambah kursus untuk menambah data baru.
+Footer:
+Informasi hak cipta di bagian bawah halaman.
+Warna biru dengan teks putih selaras dengan tema navbar.
+
 
 code di atas dibuat dengan tujuan untuk menampilkan nama judul_kursus secara otomatis ketika pengguna memilih dari dropdown id_materi yang dimana artinya judul kursus tidak perlu menambhkan secara manual judul judulnya
 ### Edit (Views)
@@ -709,7 +1034,7 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
 
 ### Index(viewa)
 ```css
-<style>
+ <style>
         html, body {
             height: 100%;
             margin: 0;
@@ -717,14 +1042,35 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
             flex-direction: column;
         }
         body {
-            background-color: #f0f8ff; /* Light blue background */
+            background-color: #f0f8ff; 
         }
         .navbar {
-            background-color: #007bff; /* Primary blue */
+        background-color: #007bff; 
+        color: white;
+        padding: 10px 20px;
+        text-align: center; 
+        font-size: 18px;
+        font-weight: bold;
+    }
+            .content {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: calc(100vh - 120px); 
+            padding: 20px; 
         }
+        .row {
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+        }
+
         .card {
             border: none;
             transition: transform 0.3s;
+            align-items:  center;
+            justify-content: center;
         }
         .card:hover {
             transform: scale(1.05);
@@ -737,7 +1083,8 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
             background-color: #004494;
         }
         .content {
-            flex: 1; /* Membuat konten mengisi ruang yang tersisa */
+            flex: 1;
+            
         }
         footer {
             width: 100%;
@@ -746,6 +1093,8 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
             text-align: center;
             padding: 10px 0;
         }
+
+        
     </style>
 ```
 Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman_kursus) dimana akan memberikan tampilan menarik
@@ -784,7 +1133,7 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
 
         <div class="row g-4">
             <!-- Menu 1 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/userpic.jpg" class="card-img-top" alt="Menu 1">
                     <div class="card-body text-center">
@@ -796,7 +1145,7 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
             </div>
 
             <!-- Menu 2 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/materipic.jpg" class="card-img-top" alt="Menu 2">
                     <div class="card-body text-center">
@@ -808,7 +1157,7 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
             </div>
 
             <!-- Menu 3 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/kursuss.jpg" class="card-img-top" alt="Menu 3">
                     <div class="card-body text-center">
@@ -823,7 +1172,7 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
 
     <!-- Footer -->
     <footer>
-        <p class="mb-0">&copy; 2024 Dashboard Inc. All rights reserved.</p>
+        <p class="mb-0">&copy; 2024 AndinAuliaWindy.</p>
     </footer>
 ```
 
@@ -831,47 +1180,75 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
 digunakan untuk memberikan tampilan berupa navbar yang diberikan link dan dapat mengarah ke halaman tertentu yang telah ditentukan
 
 ### Routes 
-```php
+* routes.php
+
+  "routes.php" memetakan permintaan masuk ke metode pengontrol yang sesuai.
+  ````php
+  <?php
+// routes.php
+
 require_once 'app/controllers/UserController.php';
 require_once 'app/controllers/MateriController.php';
 require_once 'app/controllers/KursusController.php';
+```
+mengimpor file pengontrol yang dibutuhkan yaitu useController, materiController, kursusController. setiap pengontrol berisi metode terkait entitas user, materi, kursus.
 
+```php
 $controllerUser = new UserController();
 $controllerMateri = new MateriController();
 $controllerKursus = new KursusController();
-
 $url = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
+```
+instansiasi pengonrtol sehingga metodenya dapat dipanggil. 
+$url: Mengambil jalur URL dari permintaan saat ini.
+$requestMethod: Mendapatkan metode HTTP (seperti GET, POST) yang digunakan dalam permintaan.
 
-// milik kursus
+```php
 if ($url == '/kursus/halaman_kursus' ) {
     $controllerKursus->halaman_kursus();
 } elseif ($url == '/Kursus/index' ) {
     $controllerKursus->index();
-}elseif ($url == '/Kursus/index' ) {
+} elseif ($url == '/Kursus/home' ) {
     $controllerKursus->home();
-} elseif ($url == '/'){
-    $controllerKursus ->index(); 
-}elseif ($url == '/kursus/halaman_kursus' ) {
-    $controllerKursus->simpan();
-}elseif ($url == '/kursus/create' && $requestMethod == 'GET') {
+} elseif ($url == '/') {
+    $controllerKursus->index();
+} elseif ($url == '/kursus/create' && $requestMethod == 'GET') {
     $controllerKursus->create();
 } elseif ($url == '/kursus/store' && $requestMethod == 'POST') {
     $controllerKursus->store();
 } elseif (preg_match('/\/kursus\/edit\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
-    $userId = $matches[1];
-    $controllerKursus->edit($userId);
+    $kursusId = $matches[1];
+    $controllerKursus->edit($kursusId);
 } elseif (preg_match('/\/kursus\/update\/(\d+)/', $url, $matches) && $requestMethod == 'POST') {
-    $userId = $matches[1];
-    $controllerKursus->update($userId, $_POST);
+    $kursusId = $matches[1];
+    $controllerKursus->update($kursusId, $_POST);
 } elseif (preg_match('/\/kursus\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
-    $userId = $matches[1];
-    $controllerKursus->delete($userId);
-} elseif ($url == '/materi/halaman_materi' ) {
+    $kursusId = $matches[1];
+    $controllerKursus->delete($kursusId);
+}
+```
+routing untuk kursus
+1. halaman_kursus
+Dipanggil ketika URL adalah /kursus/halaman_kursus.
+Memanggil metode halaman_kursus() di KursusController.
+
+2. index dan home
+Memetakan /Kursus/index dan /Kursus/home ke metode yang sesuai di KursusController.
+/ juga dipetakan ke index().
+
+3. create dan store
+/kursus/create dengan metode GET memanggil metode create().
+/kursus/store dengan metode POST memanggil metode store(), meneruskan data formulir melalui $_POST.
+
+4. edit, update, dan delete
+Menggunakan regex untuk mencocokkan rute seperti /kursus/edit/{id} atau /kursus/update/{id}.
+Menangkap {id} dari URL dan meneruskannya sebagai parameter ke metode yang sesuai.
+
+``php
+if ($url == '/materi/halaman_materi' ) {
     $controllerMateri->halaman_materi();
-} elseif ($url == '/materi/kursus' ) {
-    $controllerMateri->simpan();
-}elseif ($url == '/materi/create' && $requestMethod == 'GET') {
+} elseif ($url == '/materi/create' && $requestMethod == 'GET') {
     $controllerMateri->create();
 } elseif ($url == '/materi/store' && $requestMethod == 'POST') {
     $controllerMateri->store();
@@ -884,11 +1261,13 @@ if ($url == '/kursus/halaman_kursus' ) {
 } elseif (preg_match('/\/materi\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
     $materiId = $matches[1];
     $controllerMateri->delete($materiId);
-} elseif ($url == '/user/halaman_user' ) {
+    ```
+routing untuk materi, sama halnya dengan routimg untuk kursus berlaku dan berfungsi sama.
+
+```php
+if ($url == '/user/halaman_user' ) {
     $controllerUser->halaman_user();
-} elseif ($url == '/user/kursus' ) {
-    $controllerUser->simpan();
-}elseif ($url == '/user/create' && $requestMethod == 'GET') {
+} elseif ($url == '/user/create' && $requestMethod == 'GET') {
     $controllerUser->create();
 } elseif ($url == '/user/store' && $requestMethod == 'POST') {
     $controllerUser->store();
@@ -901,15 +1280,19 @@ if ($url == '/kursus/halaman_kursus' ) {
 } elseif (preg_match('/\/user\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
     $userId = $matches[1];
     $controllerUser->delete($userId);
-} else {
+}
+```
+routing untuk user
+
+```php
+else {
     http_response_code(404);
     echo "hihi";
 }
-```
 digunakan untuk membuat link yang dapat mengarahkan file filenya, yang dapat mengarahkan berbagai permintaan ke controller yang sesuai berdasarkan url yang telah dibuat.
 
 
-## MATERI
+## 2. MATERI
 * create.php
   
 ```php
@@ -1234,7 +1617,7 @@ public function delete($id_materi) {
 ```
 public function delete merupakan proses untuk menghapus data dalam database dengan mem,eriksa $id_materi, jika proses berhasil akan mengarhkan ke laman index.
 
-## USER
+## 3. USER
 UserController
 UserController adalah sebuah controller dalam aplikasi PHP MVC sederhana yang bertanggung jawab untuk mengelola operasi CRUD (Create, Read, Update, Delete) pada data pengguna. Controller ini menghubungkan model User dengan view terkait untuk memproses dan menampilkan data. 
 
@@ -1638,3 +2021,408 @@ Email: Alamat email pengguna.
 Password: Password pengguna.
 Peran: Peran pengguna (misalnya, Admin, User).
 Aksi: Tombol untuk mengedit atau menghapus pengguna.
+
+#Create.php
+```php
+<!-- app/views/user/create.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Materi Baru</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center text-primary mb-4">Tambah Kursus Baru</h2>
+        <form action="/kursus/store" method="POST" class="bg-white p-4 rounded shadow">
+           
+            <div class="mb-3">
+                <label for="id_user" class="form-label">ID User:</label>
+                <select name="id_user" id="id_user" class="form-control" required>
+                    <option value="">Pilih User</option>
+                    <?php foreach ($users as $user): ?>
+                        <option value="<?php echo $user['id_user']; ?>" data-user="<?php echo $user['nama']; ?>">
+                            <?php echo htmlspecialchars($user['nama']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_materi" class="form-label">ID Materi:</label>
+                <select name="id_materi" id="id_materi" class="form-control" required>
+                    <option value="">ID Materi</option>
+                    <?php foreach ($materi as $materi): ?>
+                        <option value="<?php echo $materi['id_materi']; ?>" data-materi="<?php echo $materi['kursus_terkait']; ?>">
+                            <?php echo htmlspecialchars($materi['kursus_terkait']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="mb-3" style="display: none;">
+                <label for="judul_kursus" class="form-label">Judul Kursus :</label>
+                <input type="text" name="judul_kursus" id="judul_kursus" class="form-control" placeholder="Masukkan Judul Instruksi" readonly>
+               
+            </div>
+            <div class="mb-3" style="display: none;">
+                <label for="instruktur" class="form-label">Instruktur:</label>
+                <input type="text" name="instruktur" id="instruktur" class="form-control" placeholder="Masukkan nama instruksi" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi:</label>
+                <textarea name="deskripsi" id="deskripsi" class="form-control" rows="4" placeholder="Masukkan Deskripsi Kursus" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="durasi" class="form-label">Durasi:</label>
+                <input type="text" name="durasi" id="durasi" class="form-control" placeholder="Masukkan Durasi" required>
+                
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.getElementById('id_user').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaUser = selectedOption.getAttribute('data-user');
+
+            document.getElementById('instruktur').value = namaUser || '';
+ 
+        });
+    </script>
+
+<script>
+        document.getElementById('id_materi').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaMateri = selectedOption.getAttribute('data-materi');
+
+            document.getElementById('judul_kursus').value = namaMateri || '';
+        });
+    </script>
+</body>
+</html>
+```
+Metode yang digunakan pada file create.php ini diantaranya sebagai berikut
+Dropdown Dinamis:
+Dropdown ID User mengisi otomatis kolom Instruktur berdasarkan pilihan user.
+Dropdown ID Materi mengisi otomatis kolom Judul Kursus berdasarkan pilihan materi.
+Form Responsif:
+Didukung oleh Bootstrap 5, memastikan form terlihat baik di berbagai ukuran layar.
+Validasi:
+Atribut required digunakan pada input form untuk memastikan data yang wajib diisi tidak kosong.
+Keamanan:
+Data yang ditampilkan melalui PHP menggunakan htmlspecialchars() untuk menghindari serangan XSS.
+Struktur Input Form
+ID User:
+Dropdown untuk memilih user.
+Kolom Instruktur otomatis diisi dengan nama user yang dipilih.
+ID Materi:
+Dropdown untuk memilih materi.
+Kolom Judul Kursus otomatis diisi dengan nama kursus terkait.
+Deskripsi:
+Input teks area untuk memasukkan deskripsi kursus.
+Durasi:
+Input teks untuk memasukkan durasi kursus.
+Tombol Simpan:
+Mengirimkan data ke URL /kursus/store melalui metode POST.
+Dependensi
+Bootstrap 5:
+CSS dan JS untuk tampilan dan interaktivitas modern.
+CDN digunakan untuk memuat file Bootstrap:
+Bootstrap CSS
+Bootstrap JS
+Cara Kerja JavaScript
+Dropdown ID User:
+Event listener mendeteksi perubahan pada dropdown.
+Atribut data-user dari opsi yang dipilih digunakan untuk mengisi kolom Instruktur secara otomatis.
+Dropdown ID Materi:
+Event listener mendeteksi perubahan pada dropdown.
+Atribut data-materi dari opsi yang dipilih digunakan untuk mengisi kolom Judul Kursus secara otomatis.
+
+#Edit.php
+```php
+<!-- app/views/user/edit.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Materi</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center text-primary mb-4">Edit Kursus</h2>
+        <form action="/kursus/update/<?php echo $kursus['id_kursus']; ?>" method="POST" class="bg-white p-4 rounded shadow">
+        <div class="mb-3">      
+             <label for="id_user" class="form-label">Instruktur :</label>
+                <select name="id_user" id="id_user" class="form-control" required>
+                   <?php foreach ($users as $user): ?>
+                     <option value="<?php echo $user['id_user']; ?>" 
+                          data-user="<?php echo $user['nama']; ?>" 
+                          <?php echo ($user['id_user'] == $kursus['id_user']) ? 'selected' : ''; ?>>
+                          <?php echo htmlspecialchars($user['nama']); ?>
+                     </option>
+                     <?php endforeach; ?>
+                </select>
+         </div>
+         <div class="mb-3" >
+            <label for="id_materi" class="form-label">Judul Kursus:</label>
+                <select name="id_materi" id="id_materi" class="form-control" required>
+                    <?php foreach ($materis as $materi): ?>
+                        <option value="<?php echo $materi['id_materi']; ?>" 
+                            data-user="<?php echo $materi['kursus_terkait']; ?>" 
+                            <?php echo ($materi['id_materi'] == $kursus['id_materi']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($materi['kursus_terkait']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+         </div>
+         <div class="mb-3" style="display: none;">
+                <label for="judul_kursus" class="form-label">Judul Kursus :</label>
+                <input type="text" name="judul_kursus" id="judul_kursus" class="form-control"  readonly value="<?php echo $kursus['judul_kursus']; ?>" readonly>
+          </div>
+         <div class="mb-3"style="display: none;">
+                <label for="instruktur" class="form-label">Instruksi :</label>
+                <input type="text" name="instruktur" id="instruktur" class="form-control"    value="<?php echo $kursus['instruktur']; ?>" readonly>
+         </div>
+         <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi :</label>
+                <textarea name="deskripsi" id="deskripsi" class="form-control" required>
+                   <?php echo isset($kursus['deskripsi']) ? htmlspecialchars($kursus['deskripsi'], ENT_QUOTES, 'UTF-8') : ''; ?>
+                </textarea>
+         </div>
+         <div class="mb-3">
+                <label for="durasi" class="form-label">Durasi :</label>
+                <input type="text" name="durasi" id="durasi" class="form-control"  value="<?php echo $kursus['durasi']; ?>"   required>
+         </div>
+         <div class="text-center">
+                <button href="kursus/halaman_kursus" type="submit" class="btn btn-primary">Update</button>
+                <a href="/kursus/halaman_kursus" class="btn btn-secondary">Back to List</a>
+         </div>
+         </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('id_user').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaUser = selectedOption.getAttribute('data-user');
+
+            document.getElementById('instruktur').value = namaUser || '';
+
+        });
+    </script>
+
+    <script>
+        document.getElementById('id_materi').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaMateri = selectedOption.getAttribute('data-materi');
+
+            document.getElementById('judul_kursus').value = namaMateri || '';
+        });
+    </script>
+</body>
+</html>
+```
+File ini adalah halaman web yang digunakan untuk mengedit data kursus yang sudah ada dalam sistem. Halaman ini dirancang menggunakan HTML, PHP, dan Bootstrap 5 untuk memberikan tampilan yang responsif dan fitur interaktif untuk mempermudah pengeditan data kursus.
+
+Fitur Utama
+Dropdown Dinamis:
+Dropdown Instruktur otomatis mengisi kolom Instruksi berdasarkan pilihan user.
+Dropdown Judul Kursus otomatis mengisi kolom Judul Kursus berdasarkan pilihan materi.
+Form dengan Data Awal:
+Data yang sudah ada sebelumnya ditampilkan secara otomatis di form untuk diedit.
+Validasi:
+Atribut required digunakan untuk memastikan semua data wajib diisi.
+Navigasi:
+Tombol Update untuk menyimpan perubahan.
+Tombol Back to List untuk kembali ke halaman daftar kursus.
+Struktur Input Form
+Instruktur:
+Dropdown yang terisi dengan daftar instruktur.
+Kolom Instruksi otomatis terisi berdasarkan instruktur yang dipilih.
+Judul Kursus:
+Dropdown yang terisi dengan daftar materi.
+Kolom Judul Kursus otomatis terisi berdasarkan materi yang dipilih.
+Deskripsi:
+Input teks area untuk memasukkan deskripsi kursus.
+Durasi:
+Input teks untuk memasukkan durasi kursus.
+Tombol:
+Update: Mengirimkan data ke endpoint /kursus/update/{id_kursus}.
+Back to List: Mengarahkan kembali ke halaman daftar kursus.
+
+# halaman_kursus.php
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Manajemen Kursus Online</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            background-color: #f0f8ff; /* Light blue background */
+        }
+        .navbar {
+            background-color: #007bff; /* Primary blue */
+        }
+        .card {
+            border: none;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .btn-primary {
+            background-color: #0056b3;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #004494;
+        }
+        .content {
+            flex: 1; /* Buat konten mengisi ruang yang tersisa */
+        }
+        footer {
+            width: 100%;
+            background-color: #007bff; /* Footer warna biru */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand">Sistem Manajemen Kursus Online</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/halaman_user">User</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/materi/halaman_materi">Materi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/kursus/halaman_kursus">Kursus</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <div class="content">
+        <div class="container mt-4">
+            <h2 class="text-center mb-4" style="color:rgb(80, 156, 238);">Daftar Kursus</h2>
+            <a href="/kursus/create" class="btn btn-primary mb-3">Tambah Kursus Baru</a>
+            <table class="table table-bordered table-hover" style="border: 2px solid rgb(80, 156, 238);">
+                <thead style="background-color:rgb(80, 156, 238); color: white;">
+                    <tr>
+                        <!-- <th>Id Kursus</th> -->
+                        <!-- <th>Id User</th>
+                        <th>Id Materi</th> -->
+                        <th>Judul Kursus</th>
+                        <th>Instruktur</th>
+                        <th>Deskripsi</th>
+                        <th>Durasi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($kursuss as $kursus): ?>
+                        <tr>
+                        <!-- <td><?= $id_kursus++; ?> -->
+                        <!-- <td><?= htmlspecialchars($kursus['id_kursus']) ?></td> -->
+                            <!-- <td><?= htmlspecialchars($kursus['id_user']) ?></td>
+                            <td><?= htmlspecialchars($kursus['id_materi']) ?></td> -->
+                            <td><?= htmlspecialchars($kursus['judul_kursus']) ?></td>
+                            <td><?= htmlspecialchars($kursus['instruktur']) ?></td>
+                            <td><?= htmlspecialchars($kursus['deskripsi']) ?></td>
+                            <td><?= htmlspecialchars($kursus['durasi']) ?></td>
+                            <td>
+                                <a href="/kursus/edit/<?= $kursus['id_kursus']; ?>" class="btn btn-warning btn-sm">Edit</a> |
+                                <a href="/kursus/delete/<?= $kursus['id_kursus']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin?')">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p class="mb-0">&copy; 2024 Dashboard Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+```
+File ini adalah halaman utama untuk sistem manajemen kursus online. Halaman ini menampilkan daftar kursus yang tersedia serta menyediakan fitur untuk menambah, mengedit, dan menghapus kursus. Desain halaman ini menggunakan framework Bootstrap 5 dengan tambahan CSS custom untuk memberikan pengalaman antarmuka yang modern dan responsif.
+
+Fitur Utama
+Navbar Navigasi:
+Menyediakan menu navigasi untuk halaman:
+Home
+User
+Materi
+Kursus
+Tabel Daftar Kursus:
+Menampilkan daftar kursus dalam bentuk tabel dengan kolom:
+Judul Kursus
+Instruktur
+Deskripsi
+Durasi
+Aksi (Edit & Delete)
+Tombol Tambah Kursus:
+Memungkinkan pengguna untuk menambahkan kursus baru dengan mengarahkan ke halaman pembuatan kursus.
+Aksi Edit dan Delete:
+Edit: Mengarahkan pengguna ke halaman pengeditan kursus tertentu.
+Delete: Menghapus kursus dengan konfirmasi untuk mencegah kesalahan.
+Struktur Halaman
+Navbar:
+Posisi di bagian atas halaman.
+Warna biru dengan teks putih untuk tampilan profesional.
+Opsi navigasi menuju halaman lain yang relevan.
+Konten Utama:
+Tabel daftar kursus yang menampilkan informasi kursus.
+Tombol tambah kursus untuk menambah data baru.
+Footer:
+Informasi hak cipta di bagian bawah halaman.
+Warna biru dengan teks putih selaras dengan tema navbar.
