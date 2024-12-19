@@ -854,47 +854,75 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
 digunakan untuk memberikan tampilan berupa navbar yang diberikan link dan dapat mengarah ke halaman tertentu yang telah ditentukan
 
 ### Routes 
-```php
+* routes.php
+
+  "routes.php" memetakan permintaan masuk ke metode pengontrol yang sesuai.
+  ````php
+  <?php
+// routes.php
+
 require_once 'app/controllers/UserController.php';
 require_once 'app/controllers/MateriController.php';
 require_once 'app/controllers/KursusController.php';
+```
+mengimpor file pengontrol yang dibutuhkan yaitu useController, materiController, kursusController. setiap pengontrol berisi metode terkait entitas user, materi, kursus.
 
+```php
 $controllerUser = new UserController();
 $controllerMateri = new MateriController();
 $controllerKursus = new KursusController();
-
 $url = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
+```
+instansiasi pengonrtol sehingga metodenya dapat dipanggil. 
+$url: Mengambil jalur URL dari permintaan saat ini.
+$requestMethod: Mendapatkan metode HTTP (seperti GET, POST) yang digunakan dalam permintaan.
 
-// milik kursus
+```php
 if ($url == '/kursus/halaman_kursus' ) {
     $controllerKursus->halaman_kursus();
 } elseif ($url == '/Kursus/index' ) {
     $controllerKursus->index();
-}elseif ($url == '/Kursus/index' ) {
+} elseif ($url == '/Kursus/home' ) {
     $controllerKursus->home();
-} elseif ($url == '/'){
-    $controllerKursus ->index(); 
-}elseif ($url == '/kursus/halaman_kursus' ) {
-    $controllerKursus->simpan();
-}elseif ($url == '/kursus/create' && $requestMethod == 'GET') {
+} elseif ($url == '/') {
+    $controllerKursus->index();
+} elseif ($url == '/kursus/create' && $requestMethod == 'GET') {
     $controllerKursus->create();
 } elseif ($url == '/kursus/store' && $requestMethod == 'POST') {
     $controllerKursus->store();
 } elseif (preg_match('/\/kursus\/edit\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
-    $userId = $matches[1];
-    $controllerKursus->edit($userId);
+    $kursusId = $matches[1];
+    $controllerKursus->edit($kursusId);
 } elseif (preg_match('/\/kursus\/update\/(\d+)/', $url, $matches) && $requestMethod == 'POST') {
-    $userId = $matches[1];
-    $controllerKursus->update($userId, $_POST);
+    $kursusId = $matches[1];
+    $controllerKursus->update($kursusId, $_POST);
 } elseif (preg_match('/\/kursus\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
-    $userId = $matches[1];
-    $controllerKursus->delete($userId);
-} elseif ($url == '/materi/halaman_materi' ) {
+    $kursusId = $matches[1];
+    $controllerKursus->delete($kursusId);
+}
+```
+routing untuk kursus
+1. halaman_kursus
+Dipanggil ketika URL adalah /kursus/halaman_kursus.
+Memanggil metode halaman_kursus() di KursusController.
+
+2. index dan home
+Memetakan /Kursus/index dan /Kursus/home ke metode yang sesuai di KursusController.
+/ juga dipetakan ke index().
+
+3. create dan store
+/kursus/create dengan metode GET memanggil metode create().
+/kursus/store dengan metode POST memanggil metode store(), meneruskan data formulir melalui $_POST.
+
+4. edit, update, dan delete
+Menggunakan regex untuk mencocokkan rute seperti /kursus/edit/{id} atau /kursus/update/{id}.
+Menangkap {id} dari URL dan meneruskannya sebagai parameter ke metode yang sesuai.
+
+``php
+if ($url == '/materi/halaman_materi' ) {
     $controllerMateri->halaman_materi();
-} elseif ($url == '/materi/kursus' ) {
-    $controllerMateri->simpan();
-}elseif ($url == '/materi/create' && $requestMethod == 'GET') {
+} elseif ($url == '/materi/create' && $requestMethod == 'GET') {
     $controllerMateri->create();
 } elseif ($url == '/materi/store' && $requestMethod == 'POST') {
     $controllerMateri->store();
@@ -907,11 +935,13 @@ if ($url == '/kursus/halaman_kursus' ) {
 } elseif (preg_match('/\/materi\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
     $materiId = $matches[1];
     $controllerMateri->delete($materiId);
-} elseif ($url == '/user/halaman_user' ) {
+    ```
+routing untuk materi, sama halnya dengan routimg untuk kursus berlaku dan berfungsi sama.
+
+```php
+if ($url == '/user/halaman_user' ) {
     $controllerUser->halaman_user();
-} elseif ($url == '/user/kursus' ) {
-    $controllerUser->simpan();
-}elseif ($url == '/user/create' && $requestMethod == 'GET') {
+} elseif ($url == '/user/create' && $requestMethod == 'GET') {
     $controllerUser->create();
 } elseif ($url == '/user/store' && $requestMethod == 'POST') {
     $controllerUser->store();
@@ -924,11 +954,15 @@ if ($url == '/kursus/halaman_kursus' ) {
 } elseif (preg_match('/\/user\/delete\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
     $userId = $matches[1];
     $controllerUser->delete($userId);
-} else {
+}
+```
+routing untuk user
+
+```php
+else {
     http_response_code(404);
     echo "hihi";
 }
-```
 digunakan untuk membuat link yang dapat mengarahkan file filenya, yang dapat mengarahkan berbagai permintaan ke controller yang sesuai berdasarkan url yang telah dibuat.
 
 
