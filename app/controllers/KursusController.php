@@ -9,45 +9,33 @@ class KursusController {
         $this->kursusModel = new Kursus();
     }
 
+    public function home(){
+        require_once '../app/views/kursus/index.php';
+    }
+
+    public function index(){
+        require_once '../app/views/kursus/index.php';
+    }
+
     public function simpan(){
         $kursus = $this->kursusModel->getAlltbl_kursus();
 
-        require_once '../app/views/user/kursus.php';
+        require_once '../app/views/kursus/index.php';
     }
     
-    public function index() {
-        $kursus = $this->kursusModel->getAlltbl_kursus();
-        require_once '../app/views/user/index.php';
+    public function halaman_kursus() {
+        $kursuss = $this->kursusModel->getAlltbl_kursus();
+        require_once '../app/views/kursus/halaman_kursus.php';
 
     }
 
     public function create() {
         $users = $this->kursusModel->getAllUser();
         $materi = $this->kursusModel->getAllMateri();
-        $kursus = $this->kursusModel->getAllKursus();
-        require_once '../app/views/user/create.php';
+        $kursus = $this->kursusModel->getAlltbl_kursus();
+        require_once '../app/views/kursus/create.php';
 
     }
-
-//     public function deskripsi(){
-// $id_user = $_GET['id_user']; // Atau menggunakan $_POST atau parameter lain
-// $deskripsi = isset($kursus['deskripsi']) ? $kursus['deskripsi'] : ''; // Fungsi untuk mengambil deskripsi
-// $this->view('user/edit', ['deskripsi' => $deskripsi]); 
-
-//     }
-
-public function deskripsi(){
- // Pastikan di controller
-$deskripsi = $this->kursusModel->getdeskripsiById($deskripsi); // Dapatkan data kursus berdasarkan id_kursus
-// Kemudian kirim ke view
-$this->view('user/edit', $kursus); // Pastikan kursus berisi deskripsi yang benar
-
-
-
-}
-
-    
-
 
     public function store() {
         $id_kursus = $_POST['id_kursus'];
@@ -58,34 +46,33 @@ $this->view('user/edit', $kursus); // Pastikan kursus berisi deskripsi yang bena
         $deskripsi = $_POST['deskripsi'];
         $durasi = $_POST['durasi'];
         $this->kursusModel->add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi);
-        header('Location: /user/kursus');
+        header('Location: /kursus/halaman_kursus');
     }
     // Show the edit form with the user data
     public function edit($id_kursus) {
-        $kursus = $this->kursusModel->find($id_kursus); 
+        $kursus = $this->kursusModel->find($id_kursus); // mencari berdasarkan idnya
         $users = $this->kursusModel->getAllUser();
-        $materi = $this->kursusModel->getAllMateri();
-        $kursus = $this->kursusModel->getAllKursus();
-        require_once __DIR__ . '/../views/user/edit.php';
+        $materis = $this->kursusModel->getAllMateri();
+       
+        // $id_kursus = $kursus['id_kursus'];
+        require_once __DIR__ . '/../views/kursus/edit.php';
     }
 
     // Process the update request
-    public function update($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi) {
-        $updated = $this->kursusModel->update($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi);
+    public function update($id_kursus, $data) {
+        $updated = $this->kursusModel->update($id_kursus, $data);
         if ($updated) {
-            header("Location: /user/kursus"); // Redirect to user list
+            header("Location: /kursus/halaman_kursus"); // Redirect to user list
         } else {
             echo "Failed to update kursus.";
         }
     }
 
-    // $updated = $this->kursusModel->update($id_kursus, $id_user, $id_materi, $judul_materi, $instruktur, $deskripsi, $durasi);
-
     // Process delete request
     public function delete($id_kursus) {
         $deleted = $this->kursusModel->delete($id_kursus);
         if ($deleted) {
-            header("Location: /user/index"); // Redirect to user list
+            header("Location: /kursus/halaman_kursus"); // Redirect to user list
         } else {
             echo "Failed to delete kursus.";
         }

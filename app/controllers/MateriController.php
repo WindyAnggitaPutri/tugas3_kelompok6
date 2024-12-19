@@ -10,14 +10,22 @@ class materiController {
         $this->materiModel = new Materi();
     }
     // DITANYAAINNNN!!
-    public function index() {
+    public function halaman_materi() {
         $materis = $this->materiModel->getAllMateri();
-        require_once '../app/views/materi/index.php';
+        require_once '../app/views/materi/halaman_materi.php';
 
     }
 
+    public function home(){
+        require_once '../app/views/kursus/index.php';
+    } 
+
     public function create() {
         require_once '../app/views/materi/create.php';
+    }
+
+    public function index(){
+        require_once '../app/views/kursus/index.php';
     }
 
     public function store() {
@@ -26,7 +34,7 @@ class materiController {
         $konten = $_POST['konten'];
         $kursus_terkait = $_POST['kursus_terkait'];
         $this->materiModel->add($id_materi, $judul_materi, $konten, $kursus_terkait);
-        header('Location: /materi/index');
+        header('Location: /materi/halaman_materi');
     }
     // menampilkan form edit berdasarkan data dengan mengambil id_materi
     public function edit($id_materi) {
@@ -38,7 +46,7 @@ class materiController {
     public function update($id_materi, $data) {
         $updated = $this->materiModel->update($id_materi, $data);
         if ($updated) {
-            header("Location: /materi/index"); // Redirect ke index materi untuk menampilkan list
+            header("Location: /materi/halaman_materi"); // Redirect ke index materi untuk menampilkan list
         } else {
             echo "Failed to update materi.";
         }
@@ -48,7 +56,7 @@ class materiController {
     public function delete($id_materi) {
         $deleted = $this->materiModel->delete($id_materi);
         if ($deleted) {
-            header("Location: /materi/index"); // redirect ke index untuk menampiilkan list 
+            header("Location: /materi/halaman_materi"); // redirect ke index untuk menampiilkan list 
         } else {
             echo "Failed to delete user."; //output apabila data tidak berhasil dihapus
         }

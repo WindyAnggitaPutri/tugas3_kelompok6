@@ -10,7 +10,6 @@ class kursus {
     }
 
     public function getAlltbl_kursus() {
-        // $query = $this->db->query("SELECT id_kursus,id_user, id_materi, judul_kursus, instruktur, deskripsi, durasi FROM tbl_kursus");
         $query = $this->db->query("SELECT k.id_kursus, u.id_user, m.id_materi, m.kursus_terkait as judul_kursus, u.nama as instruktur , k.deskripsi, k.durasi
         from tbl_kursus k 
         join tbl_user u on k.id_user = u.id_user 
@@ -34,25 +33,9 @@ class kursus {
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // public function getInstruktor(){
-    //     $query = $this->db->prepare("SELECT nama,id_user from tbl_user where peran = 'instruktur'");
-    //     return $query->fetchAll(PDO::FETCH_ASSOC);
-    // }
-
-
-    // public function getAlltbl_materi(){
-    //     $query = $this->db->query("SELECT u.id_user, u.nama, m.id_materi, m.kursus_terkait, k.id_kursus, k.judul_kursus, k.instruktur, k.deskripsi, k.durasi 
-    //     FROM tbl_materi m JOIN tbl_kursus k JOIN tbl_user u
-    //     ON k.id_user= u.id_user and k.id_materi = m.id_materi")
-    //     return $query->fetchAll(PDO::FETCH_ASSOC);
-    // }
-
-  
-
-
     public function find($id_kursus) {
         $query = $this->db->prepare("SELECT * FROM tbl_kursus WHERE id_kursus = :id_kursus");
-        $query->bindParam(':id_kursus', $id, PDO::PARAM_INT);
+        $query->bindParam(':id_kursus', $id_kursus, PDO::PARAM_INT);
         $query->execute();
         return $query->fetch(PDO::FETCH_ASSOC);
     }
@@ -70,17 +53,17 @@ class kursus {
     }
 
     // Update user data by ID
-    public function update($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi) {
+    public function update($id_kursus, $data) {
         $query = "UPDATE tbl_kursus SET id_kursus = :id_kursus, id_user = :id_user, id_materi = :id_materi, judul_kursus = :judul_kursus, instruktur = :instruktur, deskripsi = :deskripsi, durasi = :durasi WHERE id_kursus = :id_kursus";
         $stmt = $this->db->prepare($query);
         
-        $stmt->bindParam(':id_kursus', $id_kursus);
-        $stmt->bindParam(':id_user', $id_user);
-        $stmt->bindParam(':id_materi', $materi);
-        $stmt->bindParam(':judul_kursus', $judul_kursus);
-        $stmt->bindParam(':instruktur', $instruktur);
-        $stmt->bindParam(':deskripsi', $deskripsi);
-        $stmt->bindParam(':durasi', $durasi);
+        // $stmt->bindParam(':id_kursus', $data['id_kursus']);
+        $stmt->bindParam(':id_user', $data['id_user']);
+        $stmt->bindParam(':id_materi', $data['id_materi']);
+        $stmt->bindParam(':judul_kursus', $data['judul_kursus']);
+        $stmt->bindParam(':instruktur', $data['instruktur']);
+        $stmt->bindParam(':deskripsi', $data['deskripsi']);
+        $stmt->bindParam(':durasi', $data['durasi']);
         return $stmt->execute();
     }
 
