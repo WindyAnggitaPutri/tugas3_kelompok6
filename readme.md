@@ -373,13 +373,13 @@ metode yang berfungsi untuk mencari dan mengambil data berdasarkan if yang ada, 
 
 
 ``` php
-  public function add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi) {
-        $query = $this->db->prepare("INSERT INTO tbl_kursus (id_kursus, id_user, id_materi, judul_kursus, instruktur, deskripsi, durasi) VALUES (:id_kursus ,:id_user, :id_materi, :judul_kursus, :instruktur, :deskripsi, :durasi)");
+  public function add($id_kursus, $id_user, $id_materi, $deskripsi, $durasi) {
+        $query = $this->db->prepare("INSERT INTO tbl_kursus (id_kursus, id_user, id_materi,  deskripsi, durasi) VALUES (:id_kursus ,:id_user, :id_materi, :deskripsi, :durasi)");
         $query->bindParam(':id_kursus', $id_kursus);
         $query->bindParam(':id_user', $id_user);
         $query->bindParam(':id_materi', $id_materi);
-        $query->bindParam(':judul_kursus', $judul_kursus);
-        $query->bindParam(':instruktur', $instruktur);
+        // $query->bindParam(':judul_kursus', $judul_kursus);
+        // $query->bindParam(':instruktur', $instruktur);
         $query->bindParam(':deskripsi', $deskripsi);
         $query->bindParam(':durasi', $durasi);
         return $query->execute();
@@ -388,17 +388,18 @@ berfungsi untuk menambahkan kursus baru dalam database dengan data yang diberika
 
 ```php
 public function update($id_kursus, $data) {
-        $query = "UPDATE tbl_kursus SET id_kursus = :id_kursus, id_user = :id_user, id_materi = :id_materi, judul_kursus = :judul_kursus, instruktur = :instruktur, deskripsi = :deskripsi, durasi = :durasi WHERE id_kursus = :id_kursus";
+        $query = "UPDATE tbl_kursus SET  id_user = :id_user, id_materi = :id_materi, deskripsi = :deskripsi, durasi = :durasi WHERE id_kursus = :id_kursus";
         $stmt = $this->db->prepare($query);
         
-        // $stmt->bindParam(':id_kursus', $data['id_kursus']);
+        $stmt->bindParam(':id_kursus', $id_kursus);
         $stmt->bindParam(':id_user', $data['id_user']);
         $stmt->bindParam(':id_materi', $data['id_materi']);
-        $stmt->bindParam(':judul_kursus', $data['judul_kursus']);
-        $stmt->bindParam(':instruktur', $data['instruktur']);
+        // $stmt->bindParam(':judul _kursus', $data['judul_kursus']);
+        // $stmt->bindParam(':instruktur', $data['instruktur']);
         $stmt->bindParam(':deskripsi', $data['deskripsi']);
         $stmt->bindParam(':durasi', $data['durasi']);
         return $stmt->execute();
+    }
     }
 ```
 berfungsi untuk memperbarui data yang ada dalam database berdasarkan id
@@ -707,7 +708,7 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
 
 ### Index(viewa)
 ```css
-<style>
+ <style>
         html, body {
             height: 100%;
             margin: 0;
@@ -715,14 +716,35 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
             flex-direction: column;
         }
         body {
-            background-color: #f0f8ff; /* Light blue background */
+            background-color: #f0f8ff; 
         }
         .navbar {
-            background-color: #007bff; /* Primary blue */
+        background-color: #007bff; 
+        color: white;
+        padding: 10px 20px;
+        text-align: center; 
+        font-size: 18px;
+        font-weight: bold;
+    }
+            .content {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: calc(100vh - 120px); 
+            padding: 20px; 
         }
+        .row {
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+        }
+
         .card {
             border: none;
             transition: transform 0.3s;
+            align-items:  center;
+            justify-content: center;
         }
         .card:hover {
             transform: scale(1.05);
@@ -735,7 +757,8 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
             background-color: #004494;
         }
         .content {
-            flex: 1; /* Membuat konten mengisi ruang yang tersisa */
+            flex: 1;
+            
         }
         footer {
             width: 100%;
@@ -744,6 +767,8 @@ code di atas dibuat untuk menampilkan data yang telah di inputkan melalui form i
             text-align: center;
             padding: 10px 0;
         }
+
+        
     </style>
 ```
 Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman_kursus) dimana akan memberikan tampilan menarik
@@ -782,7 +807,7 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
 
         <div class="row g-4">
             <!-- Menu 1 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/userpic.jpg" class="card-img-top" alt="Menu 1">
                     <div class="card-body text-center">
@@ -794,7 +819,7 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
             </div>
 
             <!-- Menu 2 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/materipic.jpg" class="card-img-top" alt="Menu 2">
                     <div class="card-body text-center">
@@ -806,7 +831,7 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
             </div>
 
             <!-- Menu 3 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/kursuss.jpg" class="card-img-top" alt="Menu 3">
                     <div class="card-body text-center">
@@ -821,7 +846,7 @@ Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman
 
     <!-- Footer -->
     <footer>
-        <p class="mb-0">&copy; 2024 Dashboard Inc. All rights reserved.</p>
+        <p class="mb-0">&copy; 2024 AndinAuliaWindy.</p>
     </footer>
 ```
 
