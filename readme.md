@@ -183,7 +183,7 @@ $kursus = new kursus();
 ```
 
 # PRAKTIKUM PWEB2
-## KURSUS
+## 1. KURSUS
 ### KursusController
 ```php
 require_once '../app/models/Kursus.php';
@@ -416,7 +416,7 @@ berfungsi untuk memperbarui data yang ada dalam database berdasarkan id
 metode untuk hapus agar dapat menghapus data dalam database berdasarkkan id 
 
 ### Create (Viewas)
-#Create.php
+
 ```php
 <!-- app/views/user/create.php -->
 <!DOCTYPE html>
@@ -1292,7 +1292,7 @@ else {
 digunakan untuk membuat link yang dapat mengarahkan file filenya, yang dapat mengarahkan berbagai permintaan ke controller yang sesuai berdasarkan url yang telah dibuat.
 
 
-## MATERI
+## 2. MATERI
 * create.php
   
 ```php
@@ -1617,7 +1617,7 @@ public function delete($id_materi) {
 ```
 public function delete merupakan proses untuk menghapus data dalam database dengan mem,eriksa $id_materi, jika proses berhasil akan mengarhkan ke laman index.
 
-## USER
+## 3. USER
 UserController
 UserController adalah sebuah controller dalam aplikasi PHP MVC sederhana yang bertanggung jawab untuk mengelola operasi CRUD (Create, Read, Update, Delete) pada data pengguna. Controller ini menghubungkan model User dengan view terkait untuk memproses dan menampilkan data. 
 
