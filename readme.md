@@ -249,19 +249,16 @@ public function create() {
 berfunngsi untuk menyediakan semua infomasi yang dibutuhkan pennguna agar dapat mengisi form dengan benar
 
 ```php
-public function store() {
-        // Melakukan pengambilan data
+ public function store() {
         $id_kursus = $_POST['id_kursus'];
         $id_user = $_POST['id_user'];
         $id_materi = $_POST['id_materi'];
-        $judul_kursus = $_POST['judul_kursus'];
-        $instruktur = $_POST['instruktur'];
+        // $judul_kursus = $_POST['judul_kursus'];
+        // $instruktur = $_POST['instruktur'];
         $deskripsi = $_POST['deskripsi'];
         $durasi = $_POST['durasi'];
-
-        // Menambahkan kursus baru ke dalam database
-        $this->kursusModel->add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi);
-        header('Location: /kursus/halaman_kursus'); // Redirect ke halaman kursus
+        $this->kursusModel->add($id_kursus, $id_user, $id_materi, $deskripsi, $durasi);
+        header('Location: /kursus/halaman_kursus');
     }
 ```
 Memastikan bahwa data yang dimasukkan oleh pengguna tersimpan dengan baik dan pengguna diarahkan kembali ke halaman daftar kursus untuk melihat hasilnya
@@ -278,23 +275,24 @@ Metode ini dibuat untuk mengambil data kursus berdasarkan ID untuk ditampilkan d
 
 ```php
 public function update($id_kursus, $data) {
-        $updated = $this->kursusModel->update($id_kursus, $data); // Memperbarui kursus di database
+        $updated = $this->kursusModel->update($id_kursus, $data);
         if ($updated) {
-            header("Location: /kursus/halaman_kursus"); // Redirect ke halaman kursus
+            header("Location: /kursus/halaman_kursus"); // Redirect to user list
         } else {
-            echo "Gagal memperbarui kursus."; // Menampilkan pesan kesalahan
+            echo "Failed to update kursus.";
         }
     }
 ```
-berfungsi untuk memperbarui data kursus di database dengan data terbaru daroi formulir edit lalu menjaga data tetap terkni dan baru atau update
+berfungsi untuk memperbarui data kursus di database dengan data terbaru dari formulir edit lalu menjaga data tetap terkini dan baru atau update
 
 ```php
-public function delete($id_kursus) {
-        $deleted = $this->kursusModel->delete($id_kursus); // Menghapus kursus dari database
+// Process delete request
+    public function delete($id_kursus) {
+        $deleted = $this->kursusModel->delete($id_kursus);
         if ($deleted) {
-            header("Location: /kursus/halaman_kursus"); // Redirect ke halaman kursus
+            header("Location: /kursus/halaman_kursus"); // Redirect to user list
         } else {
-            echo "Gagal menghapus kursus."; // Menampilkan pesan kesalahan
+            echo "Failed to delete kursus.";
         }
     }
 ```
