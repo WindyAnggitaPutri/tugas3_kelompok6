@@ -579,3 +579,133 @@ Email: Alamat email pengguna.
 Password: Password pengguna.
 Peran: Peran pengguna (misalnya, Admin, User).
 Aksi: Tombol untuk mengedit atau menghapus pengguna.
+
+
+
+#Create.php
+```php
+<!-- app/views/user/create.php -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Materi Baru</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h2 class="text-center text-primary mb-4">Tambah Kursus Baru</h2>
+        <form action="/kursus/store" method="POST" class="bg-white p-4 rounded shadow">
+           
+            <div class="mb-3">
+                <label for="id_user" class="form-label">ID User:</label>
+                <select name="id_user" id="id_user" class="form-control" required>
+                    <option value="">Pilih User</option>
+                    <?php foreach ($users as $user): ?>
+                        <option value="<?php echo $user['id_user']; ?>" data-user="<?php echo $user['nama']; ?>">
+                            <?php echo htmlspecialchars($user['nama']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_materi" class="form-label">ID Materi:</label>
+                <select name="id_materi" id="id_materi" class="form-control" required>
+                    <option value="">ID Materi</option>
+                    <?php foreach ($materi as $materi): ?>
+                        <option value="<?php echo $materi['id_materi']; ?>" data-materi="<?php echo $materi['kursus_terkait']; ?>">
+                            <?php echo htmlspecialchars($materi['kursus_terkait']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="mb-3" style="display: none;">
+                <label for="judul_kursus" class="form-label">Judul Kursus :</label>
+                <input type="text" name="judul_kursus" id="judul_kursus" class="form-control" placeholder="Masukkan Judul Instruksi" readonly>
+               
+            </div>
+            <div class="mb-3" style="display: none;">
+                <label for="instruktur" class="form-label">Instruktur:</label>
+                <input type="text" name="instruktur" id="instruktur" class="form-control" placeholder="Masukkan nama instruksi" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi:</label>
+                <textarea name="deskripsi" id="deskripsi" class="form-control" rows="4" placeholder="Masukkan Deskripsi Kursus" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="durasi" class="form-label">Durasi:</label>
+                <input type="text" name="durasi" id="durasi" class="form-control" placeholder="Masukkan Durasi" required>
+                
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.getElementById('id_user').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaUser = selectedOption.getAttribute('data-user');
+
+            document.getElementById('instruktur').value = namaUser || '';
+ 
+        });
+    </script>
+
+<script>
+        document.getElementById('id_materi').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaMateri = selectedOption.getAttribute('data-materi');
+
+            document.getElementById('judul_kursus').value = namaMateri || '';
+        });
+    </script>
+</body>
+</html>
+```
+Metode yang digunakan pada file create.php ini diantaranya sebagai berikut
+Dropdown Dinamis:
+Dropdown ID User mengisi otomatis kolom Instruktur berdasarkan pilihan user.
+Dropdown ID Materi mengisi otomatis kolom Judul Kursus berdasarkan pilihan materi.
+Form Responsif:
+Didukung oleh Bootstrap 5, memastikan form terlihat baik di berbagai ukuran layar.
+Validasi:
+Atribut required digunakan pada input form untuk memastikan data yang wajib diisi tidak kosong.
+Keamanan:
+Data yang ditampilkan melalui PHP menggunakan htmlspecialchars() untuk menghindari serangan XSS.
+Struktur Input Form
+ID User:
+Dropdown untuk memilih user.
+Kolom Instruktur otomatis diisi dengan nama user yang dipilih.
+ID Materi:
+Dropdown untuk memilih materi.
+Kolom Judul Kursus otomatis diisi dengan nama kursus terkait.
+Deskripsi:
+Input teks area untuk memasukkan deskripsi kursus.
+Durasi:
+Input teks untuk memasukkan durasi kursus.
+Tombol Simpan:
+Mengirimkan data ke URL /kursus/store melalui metode POST.
+Dependensi
+Bootstrap 5:
+CSS dan JS untuk tampilan dan interaktivitas modern.
+CDN digunakan untuk memuat file Bootstrap:
+Bootstrap CSS
+Bootstrap JS
+Cara Kerja JavaScript
+Dropdown ID User:
+Event listener mendeteksi perubahan pada dropdown.
+Atribut data-user dari opsi yang dipilih digunakan untuk mengisi kolom Instruktur secara otomatis.
+Dropdown ID Materi:
+Event listener mendeteksi perubahan pada dropdown.
+Atribut data-materi dari opsi yang dipilih digunakan untuk mengisi kolom Judul Kursus secara otomatis.
