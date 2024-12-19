@@ -1309,3 +1309,332 @@ public function delete($id_user) {
     }
 }
 ```
+#UserController
+```php
+<?php
+// app/controllers/UserController.php
+require_once '../app/models/User.php';
+
+class UserController {
+    private $UserModel;
+
+    public function __construct() {
+        $this->UserModel = new User();
+    }
+
+    public function index() {
+        $user = $this->UserModel->getAlltbl_user();
+        require_once '../app/views/user/index.php';
+
+    }
+
+    public function create() {
+        require_once '../app/views/user/create.php';
+    }
+
+    public function store() {
+        $nama = $_POST['nama'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $peran = $_POST['peran'];
+        $this->UserModel->add( $nama, $email, $password, $peran);
+        header('Location: /user/index');
+    }
+    // Show the edit form with the user data
+    public function edit($id_user) {
+        $user = $this->UserModel->find($id_user); // Assume find() gets user by ID
+        require_once __DIR__ . '/../views/user/edit.php';
+    }
+
+    // Process the update request
+    public function update($id_user, $data) {
+        $updated = $this->UserModel->update($id_user, $data);
+        if ($updated) {
+            header("Location: /user/index"); // Redirect to user list
+        } else {
+            echo "Failed to update user.";
+        }
+    }
+
+    // Process delete request
+    public function delete($id_user) {
+        $deleted = $this->UserModel->delete($id_user);
+        if ($deleted) {
+            header("Location: /user/index"); // Redirect to user list
+        } else {
+            echo "Failed to delete user.";
+        }
+    }
+}
+
+```
+Terdapat metode yang dapat digunakan dalam userController, yaitu:
+
+Melihat Daftar Pengguna:
+
+Endpoint: /user/index
+
+Mengambil data semua pengguna dari model User dan menampilkannya di view.
+
+Menambah Pengguna Baru:
+
+Endpoint: /user/create (form untuk menambahkan pengguna baru).
+
+Endpoint: /user/store (proses penyimpanan data pengguna baru).
+
+Data yang diperlukan: nama, email, password, peran.
+
+Mengedit Pengguna:
+
+Endpoint: /user/edit/{id_user} (form untuk mengedit pengguna).
+
+Endpoint: /user/update (proses update data pengguna).
+
+Data yang diperlukan: nama, email, password, peran.
+
+Menghapus Pengguna:
+
+Endpoint: /user/delete/{id_user}.
+
+Menghapus data pengguna berdasarkan id_user.
+
+Penjelasan Fungsi dalam UserController
+
+index(): Menampilkan semua data pengguna ke view user/index.php.
+
+create(): Menampilkan form pembuatan pengguna baru.
+
+store(): Memproses data dari form pembuatan pengguna baru dan menyimpannya ke database.
+
+edit($id_user): Menampilkan form edit untuk pengguna tertentu berdasarkan id_user.
+
+update($id_user, $data): Memperbarui data pengguna tertentu di database.
+
+delete($id_user): Menghapus data pengguna tertentu dari database.
+
+Cara Menggunakan
+
+Clone repository ini ke direktori server lokal Anda.
+
+Pastikan konfigurasi database sudah benar pada file User.php (model).
+
+Akses endpoint seperti /user/index, /user/create, atau /user/edit/{id} melalui browser atau alat pengujian API seperti Postman.
+
+#Create.php
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Pengguna Baru</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+<<<<<<< HEAD
+        <h2 class="text-center text-primary mb-4">Tambah Pengguna Baru</h2>
+        <form action="/user/store" method="POST" class="bg-white p-4 rounded shadow">
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama:</label>
+                <input type="text" name="nama" id="nama" class="form-control" placeholder="Masukkan nama" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <textarea name="email" id="email" class="form-control" rows="4" placeholder="Masukkan email" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="text" name="password" id="password" class="form-control" placeholder="Masukkan password" required>
+            </div>
+            <div class="mb-3">
+                <label for="peran" class="form-label">Peran:</label>
+                <input type="text" name="peran" id="peran" class="form-control" placeholder="Masukkan peran" required>
+```
+
+
+Halaman ini memungkinkan pengguna untuk menambahkan data pengguna baru ke dalam sistem. Formulir yang disediakan memiliki beberapa bidang input yang wajib diisi untuk memastikan data pengguna tercatat dengan lengkap dan akurat.
+
+## Struktur Formulir
+
+Formulir terdiri dari beberapa bagian:
+
+1. **Nama**
+   - Label: `Nama:`
+   - Input: `input` dengan tipe `text`
+   - Deskripsi: Untuk memasukkan nama lengkap pengguna.
+   - Placeholder: `Masukkan nama`
+   - Validasi: Wajib diisi (`required`).
+
+2. **Email**
+   - Label: `Email:`
+   - Input: `textarea`
+   - Deskripsi: Untuk memasukkan alamat email pengguna.
+   - Placeholder: `Masukkan email`
+   - Validasi: Wajib diisi (`required`).
+
+3. **Password**
+   - Label: `Password:`
+   - Input: `input` dengan tipe `text`
+   - Deskripsi: Untuk memasukkan kata sandi pengguna.
+   - Placeholder: `Masukkan password`
+   - Validasi: Wajib diisi (`required`).
+
+4. **Peran**
+   - Label: `Peran:`
+   - Input: `input` dengan tipe `text`
+   - Deskripsi: Untuk memasukkan peran atau jabatan pengguna dalam sistem.
+   - Placeholder: `Masukkan peran`
+   - Validasi: Wajib diisi (`required`).
+
+
+     #Edit.php
+     ```php
+ <h2 class="text-center text-primary mb-4">Edit User</h2>
+        <form action="/user/update/<?php echo $user['id_user']; ?>" method="POST" class="bg-white p-4 rounded shadow">
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama:</label>
+                <input type="text" id="nama" name="nama" class="form-control" value="<?php echo $user['nama']; ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" value="<?php echo $user['email']; ?>" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password (Kosongkan jika tidak ingin diubah):</label>
+                <input type="password" id="password" name="password" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="peran" class="form-label">Peran:</label>
+                <select name="peran" id="peran" class="form-select" required>
+                    <option value="instruktur" <?php echo $user['peran'] == 'instruktur' ? 'selected' : ''; ?>>Instruktur</option>
+                    <option value="peserta" <?php echo $user['peran'] == 'peserta' ? 'selected' : ''; ?>>Peserta</option>
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="/user/index" class="btn btn-secondary">Back to List</a>
+     ```
+     Halaman ini memungkinkan pengguna untuk mengedit informasi pengguna yang sudah ada di dalam sistem. Formulir ini memuat data yang ada sebelumnya, sehingga pengguna hanya perlu memperbarui data yang diperlukan.
+
+## Struktur Formulir
+
+Formulir terdiri dari beberapa bagian:
+
+1. **Nama**
+   - Label: `Nama:`
+   - Input: `input` dengan tipe `text`
+   - Deskripsi: Untuk memperbarui nama pengguna.
+   - Value: Diisi dengan nilai awal `<?php echo $user['nama']; ?>`.
+   - Validasi: Wajib diisi (`required`).
+
+2. **Email**
+   - Label: `Email:`
+   - Input: `input` dengan tipe `email`
+   - Deskripsi: Untuk memperbarui alamat email pengguna.
+   - Value: Diisi dengan nilai awal `<?php echo $user['email']; ?>`.
+   - Validasi: Wajib diisi (`required`).
+
+3. **Password**
+   - Label: `Password:`
+   - Input: `input` dengan tipe `password`
+   - Deskripsi: Untuk memperbarui kata sandi pengguna.
+   - Catatan: Jika dikosongkan, kata sandi tidak akan diperbarui.
+
+4. **Peran**
+   - Label: `Peran:`
+   - Input: `select` dengan opsi berikut:
+     - `Instruktur`
+     - `Peserta`
+   - Deskripsi: Untuk memilih peran pengguna.
+   - Value: Opsi yang sesuai dengan peran saat ini akan dipilih menggunakan PHP `selected`.
+   - Validasi: Wajib diisi (`required`).
+
+## Implementasi Teknologi
+
+- **HTML5** digunakan untuk membuat struktur halaman dan formulir.
+- **PHP** digunakan untuk memuat data awal pengguna dan memproses formulir.
+- **CSS Bootstrap** (versi 5.3.0) digunakan untuk mempercantik tampilan dan memberikan responsivitas.
+
+## Aksi Formulir
+
+- **Metode Pengiriman**: POST
+- **Aksi**: `/user/update/<?php echo $user['id_user']; ?>`
+- Deskripsi: Data yang diperbarui dari formulir ini akan dikirim ke rute `/user/update/{id_user}` menggunakan metode `POST` untuk disimpan ke database.
+
+## Navigasi Tambahan
+
+- Tombol `Update`: Untuk mengirim data yang telah diperbarui.
+- Tombol `Back to List`: Untuk kembali ke halaman daftar pengguna tanpa melakukan perubahan.
+
+  #index.php
+```php
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Materi</title>
+    <!-- Link ke CSS Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Menambahkan beberapa kustomisasi jika diperlukan */
+        .table th, .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4" style="color:rgb(80, 156, 238);">Daftar Materi</h2>
+    <a href="/user/create" class="btn btn-primary mb-3">Tambah Pengguna Baru</a>
+    <table class="table table-bordered table-hover" style="border: 2px solid rgb(80, 156, 238);">
+        <thead style="background-color:rgb(80, 156, 238); color: white;">
+            <tr>
+                <th>No</th>    
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>Peran</th>
+                <th>Aksi</th>
+                
+            </tr>
+        </thead>
+<<<<<<< HEAD
+    <tbody>
+        <?php 
+        $no = 1; 
+        foreach ($user as $user): ?>
+        <tr>
+            <td><?= $no++ ?></td>
+            <td><?= htmlspecialchars($user['nama']) ?></td>
+            <td><?= htmlspecialchars($user['email']) ?></td>
+            <td><?= htmlspecialchars($user['password']) ?></td>
+            <td><?= htmlspecialchars($user['peran']) ?></td>
+            <td>
+                <a href="/user/edit/<?php echo $user['id_user']; ?>" class="btn btn-warning btn-sm">Edit</a>
+                <a href="/user/delete/<?php echo $user['id_user']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus?')">Delete</a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+```
+
+
+Metode yang terdapat pada file index.php ini antara lain yaitu :
+Tambah Pengguna Baru: Menambahkan pengguna baru ke dalam sistem.
+Lihat Daftar Pengguna: Menampilkan daftar pengguna yang terdaftar beserta informasi seperti nama, email, password, dan peran.
+Edit Pengguna: Memungkinkan administrator untuk mengubah informasi pengguna.
+Hapus Pengguna: Menghapus pengguna dari sistem dengan konfirmasi sebelum tindakan diambil.
+Struktur Tabel
+Tabel yang ditampilkan memiliki kolom sebagai berikut:
+
+No: Nomor urut pengguna.
+Nama: Nama pengguna.
+Email: Alamat email pengguna.
+Password: Password pengguna.
+Peran: Peran pengguna (misalnya, Admin, User).
+Aksi: Tombol untuk mengedit atau menghapus pengguna.
