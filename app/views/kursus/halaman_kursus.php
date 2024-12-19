@@ -80,9 +80,9 @@
             <table class="table table-bordered table-hover" style="border: 2px solid rgb(80, 156, 238);">
                 <thead style="background-color:rgb(80, 156, 238); color: white;">
                     <tr>
-                        <th>Id Kursus</th>
-                        <th>Id User</th>
-                        <th>Id Materi</th>
+                        <!-- <th>Id Kursus</th> -->
+                        <!-- <th>Id User</th>
+                        <th>Id Materi</th> -->
                         <th>Judul Kursus</th>
                         <th>Instruktur</th>
                         <th>Deskripsi</th>
@@ -91,11 +91,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                <?php $id_kursus = 1; foreach ($kursuss as $kursus): ?>
+                <?php foreach ($kursuss as $kursus): ?>
                         <tr>
-                        <td><?= $id_kursus++; ?>
-                            <td><?= htmlspecialchars($kursus['id_user']) ?></td>
-                            <td><?= htmlspecialchars($kursus['id_materi']) ?></td>
+                        <!-- <td><?= $id_kursus++; ?> -->
+                        <!-- <td><?= htmlspecialchars($kursus['id_kursus']) ?></td> -->
+                            <!-- <td><?= htmlspecialchars($kursus['id_user']) ?></td>
+                            <td><?= htmlspecialchars($kursus['id_materi']) ?></td> -->
                             <td><?= htmlspecialchars($kursus['judul_kursus']) ?></td>
                             <td><?= htmlspecialchars($kursus['instruktur']) ?></td>
                             <td><?= htmlspecialchars($kursus['deskripsi']) ?></td>

@@ -41,11 +41,11 @@ class KursusController {
         $id_kursus = $_POST['id_kursus'];
         $id_user = $_POST['id_user'];
         $id_materi = $_POST['id_materi'];
-        $judul_kursus = $_POST['judul_kursus'];
-        $instruktur = $_POST['instruktur'];
+        // $judul_kursus = $_POST['judul_kursus'];
+        // $instruktur = $_POST['instruktur'];
         $deskripsi = $_POST['deskripsi'];
         $durasi = $_POST['durasi'];
-        $this->kursusModel->add($id_kursus, $id_user, $id_materi, $judul_kursus, $instruktur, $deskripsi, $durasi);
+        $this->kursusModel->add($id_kursus, $id_user, $id_materi, $deskripsi, $durasi);
         header('Location: /kursus/halaman_kursus');
     }
     // Show the edit form with the user data

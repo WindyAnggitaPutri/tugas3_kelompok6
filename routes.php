@@ -28,8 +28,8 @@ if ($url == '/kursus/halaman_kursus' ) {
 } elseif ($url == '/kursus/store' && $requestMethod == 'POST') {
     $controllerKursus->store();
 } elseif (preg_match('/\/kursus\/edit\/(\d+)/', $url, $matches) && $requestMethod == 'GET') {
-    $userId = $matches[1];
-    $controllerKursus->edit($userId);
+    $kursusId = $matches[1];
+    $controllerKursus->edit($kursusId);
 } elseif (preg_match('/\/kursus\/update\/(\d+)/', $url, $matches) && $requestMethod == 'POST') {
     $userId = $matches[1];
     $controllerKursus->update($userId, $_POST);

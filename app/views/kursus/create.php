@@ -19,7 +19,7 @@
                     <option value="">Pilih User</option>
                     <?php foreach ($users as $user): ?>
                         <option value="<?php echo $user['id_user']; ?>" data-user="<?php echo $user['nama']; ?>">
-                            <?php echo htmlspecialchars($user['id_user']); ?>
+                            <?php echo htmlspecialchars($user['nama']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -31,18 +31,18 @@
                     <option value="">ID Materi</option>
                     <?php foreach ($materi as $materi): ?>
                         <option value="<?php echo $materi['id_materi']; ?>" data-materi="<?php echo $materi['kursus_terkait']; ?>">
-                            <?php echo htmlspecialchars($materi['id_materi']); ?>
+                            <?php echo htmlspecialchars($materi['kursus_terkait']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" style="display: none;">
                 <label for="judul_kursus" class="form-label">Judul Kursus :</label>
                 <input type="text" name="judul_kursus" id="judul_kursus" class="form-control" placeholder="Masukkan Judul Instruksi" readonly>
                
             </div>
-            <div class="mb-3">
+            <div class="mb-3" style="display: none;">
                 <label for="instruktur" class="form-label">Instruktur:</label>
                 <input type="text" name="instruktur" id="instruktur" class="form-control" placeholder="Masukkan nama instruksi" readonly>
             </div>

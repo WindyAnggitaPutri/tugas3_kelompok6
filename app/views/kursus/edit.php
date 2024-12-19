@@ -13,36 +13,36 @@
         <h2 class="text-center text-primary mb-4">Edit Kursus</h2>
         <form action="/kursus/update/<?php echo $kursus['id_kursus']; ?>" method="POST" class="bg-white p-4 rounded shadow">
         <div class="mb-3">      
-             <label for="id_user" class="form-label">ID User:</label>
+             <label for="id_user" class="form-label">Instruktur :</label>
                 <select name="id_user" id="id_user" class="form-control" required>
                    <?php foreach ($users as $user): ?>
                      <option value="<?php echo $user['id_user']; ?>" 
                           data-user="<?php echo $user['nama']; ?>" 
                           <?php echo ($user['id_user'] == $kursus['id_user']) ? 'selected' : ''; ?>>
-                          <?php echo htmlspecialchars($user['id_user']); ?>
+                          <?php echo htmlspecialchars($user['nama']); ?>
                      </option>
                      <?php endforeach; ?>
                 </select>
          </div>
-         <div class="mb-3">
-            <label for="id_materi" class="form-label">ID Materi:</label>
+         <div class="mb-3" >
+            <label for="id_materi" class="form-label">Judul Kursus:</label>
                 <select name="id_materi" id="id_materi" class="form-control" required>
                     <?php foreach ($materis as $materi): ?>
                         <option value="<?php echo $materi['id_materi']; ?>" 
                             data-user="<?php echo $materi['kursus_terkait']; ?>" 
                             <?php echo ($materi['id_materi'] == $kursus['id_materi']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($materi['id_materi']); ?>
+                            <?php echo htmlspecialchars($materi['kursus_terkait']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
          </div>
-         <div class="mb-3">
+         <div class="mb-3" style="display: none;">
                 <label for="judul_kursus" class="form-label">Judul Kursus :</label>
-                <input type="text" name="judul_kursus" id="judul_kursus" class="form-control"  readonly value="<?php echo $kursus['judul_kursus']; ?>">
+                <input type="text" name="judul_kursus" id="judul_kursus" class="form-control"  readonly value="<?php echo $kursus['judul_kursus']; ?>" readonly>
           </div>
-         <div class="mb-3">
+         <div class="mb-3"style="display: none;">
                 <label for="instruktur" class="form-label">Instruksi :</label>
-                <input type="text" name="instruktur" id="instruktur" class="form-control"    value="<?php echo $kursus['instruktur']; ?>">
+                <input type="text" name="instruktur" id="instruktur" class="form-control"    value="<?php echo $kursus['instruktur']; ?>" readonly>
          </div>
          <div class="mb-3">
                 <label for="deskripsi" class="form-label">Deskripsi :</label>
