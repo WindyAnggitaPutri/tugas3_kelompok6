@@ -14,14 +14,35 @@
             flex-direction: column;
         }
         body {
-            background-color: #f0f8ff; /* Light blue background */
+            background-color: #f0f8ff; 
         }
         .navbar {
-            background-color: #007bff; /* Primary blue */
+        background-color: #007bff; 
+        color: white;
+        padding: 10px 20px;
+        text-align: center; 
+        font-size: 18px;
+        font-weight: bold;
+    }
+            .content {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: calc(100vh - 120px); 
+            padding: 20px; 
         }
+        .row {
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+        }
+
         .card {
             border: none;
             transition: transform 0.3s;
+            align-items:  center;
+            justify-content: center;
         }
         .card:hover {
             transform: scale(1.05);
@@ -34,7 +55,8 @@
             background-color: #004494;
         }
         .content {
-            flex: 1; /* Membuat konten mengisi ruang yang tersisa */
+            flex: 1;
+            
         }
         footer {
             width: 100%;
@@ -43,6 +65,8 @@
             text-align: center;
             padding: 10px 0;
         }
+
+        
     </style>
 </head>
 <body>
@@ -78,7 +102,7 @@
 
         <div class="row g-4">
             <!-- Menu 1 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/userpic.jpg" class="card-img-top" alt="Menu 1">
                     <div class="card-body text-center">
@@ -90,7 +114,7 @@
             </div>
 
             <!-- Menu 2 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/materipic.jpg" class="card-img-top" alt="Menu 2">
                     <div class="card-body text-center">
@@ -102,7 +126,7 @@
             </div>
 
             <!-- Menu 3 -->
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="card shadow-sm">
                     <img src="foto/kursuss.jpg" class="card-img-top" alt="Menu 3">
                     <div class="card-body text-center">
@@ -117,7 +141,7 @@
 
     <!-- Footer -->
     <footer>
-        <p class="mb-0">&copy; 2024 Dashboard Inc. All rights reserved.</p>
+        <p class="mb-0">&copy; 2024 AndinAuliaWindy.</p>
     </footer>
 
     <!-- Bootstrap JS -->

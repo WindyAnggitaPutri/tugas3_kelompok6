@@ -60,7 +60,7 @@ class kursus {
         $stmt->bindParam(':id_kursus', $id_kursus);
         $stmt->bindParam(':id_user', $data['id_user']);
         $stmt->bindParam(':id_materi', $data['id_materi']);
-        // $stmt->bindParam(':judul_kursus', $data['judul_kursus']);
+        // $stmt->bindParam(':judul _kursus', $data['judul_kursus']);
         // $stmt->bindParam(':instruktur', $data['instruktur']);
         $stmt->bindParam(':deskripsi', $data['deskripsi']);
         $stmt->bindParam(':durasi', $data['durasi']);

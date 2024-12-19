@@ -83,6 +83,7 @@
                         <!-- <th>Id Kursus</th> -->
                         <!-- <th>Id User</th>
                         <th>Id Materi</th> -->
+                        <th>NO</th>
                         <th>Judul Kursus</th>
                         <th>Instruktur</th>
                         <th>Deskripsi</th>
@@ -91,12 +92,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($kursuss as $kursus): ?>
+                <?php $no = 1; foreach ($kursuss as $kursus): ?>
                         <tr>
                         <!-- <td><?= $id_kursus++; ?> -->
                         <!-- <td><?= htmlspecialchars($kursus['id_kursus']) ?></td> -->
                             <!-- <td><?= htmlspecialchars($kursus['id_user']) ?></td>
                             <td><?= htmlspecialchars($kursus['id_materi']) ?></td> -->
+                            <td><?= $no++ ?></td>
                             <td><?= htmlspecialchars($kursus['judul_kursus']) ?></td>
                             <td><?= htmlspecialchars($kursus['instruktur']) ?></td>
                             <td><?= htmlspecialchars($kursus['deskripsi']) ?></td>
@@ -114,7 +116,7 @@
 
     <!-- Footer -->
     <footer>
-        <p class="mb-0">&copy; 2024 Dashboard Inc. All rights reserved.</p>
+        <p class="mb-0">&copy; 2024 AndinAuliaWindy.</p>
     </footer>
 
     <!-- Bootstrap JS -->

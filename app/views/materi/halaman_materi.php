@@ -80,6 +80,7 @@
             <table class="table table-bordered table-hover" style="border: 2px solid rgb(80, 156, 238);">
                 <thead style="background-color:rgb(80, 156, 238); color: white;">
                     <tr>
+                        <th>NO</th>
                         <th>ID Materi</th>
                         <th>Judul Materi</th>
                         <th>Konten</th>
@@ -88,8 +89,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($materis as $materi): ?>
+                    <?php $no = 1; foreach ($materis as $materi): ?>
                         <tr>
+                            <td><?= $no++ ?></td>
                             <td><?= htmlspecialchars($materi['id_materi']) ?></td>
                             <td><?= htmlspecialchars($materi['judul_materi']) ?></td>
                             <td><?= htmlspecialchars($materi['konten']) ?></td>
@@ -107,7 +109,7 @@
 
     <!-- Footer -->
     <footer>
-        <p class="mb-0">&copy; 2024 Dashboard Inc. All rights reserved.</p>
+        <p class="mb-0">&copy; 2024 AndinAuliaWindy.</p>
     </footer>
 
     <!-- Bootstrap JS -->
