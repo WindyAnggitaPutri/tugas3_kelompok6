@@ -415,5 +415,294 @@ berfungsi untuk memperbarui data yang ada dalam database berdasarkan id
 ```
 metode untuk hapus agar dapat menghapus data dalam database berdasarkkan id 
 
+### Create (Viewas)
+```php
+ <form action="/kursus/store" method="POST" class="bg-white p-4 rounded shadow">
+           
+            <div class="mb-3">
+                <label for="id_user" class="form-label">ID User:</label>
+                <select name="id_user" id="id_user" class="form-control" required>
+                    <option value="">Pilih User</option>
+                    <?php foreach ($users as $user): ?>
+                        <option value="<?php echo $user['id_user']; ?>" data-user="<?php echo $user['nama']; ?>">
+                            <?php echo htmlspecialchars($user['id_user']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="id_materi" class="form-label">ID Materi:</label>
+                <select name="id_materi" id="id_materi" class="form-control" required>
+                    <option value="">ID Materi</option>
+                    <?php foreach ($materi as $materi): ?>
+                        <option value="<?php echo $materi['id_materi']; ?>" data-materi="<?php echo $materi['kursus_terkait']; ?>">
+                            <?php echo htmlspecialchars($materi['id_materi']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="judul_kursus" class="form-label">Judul Kursus :</label>
+                <input type="text" name="judul_kursus" id="judul_kursus" class="form-control" placeholder="Masukkan Judul Instruksi" readonly>
+               
+            </div>
+            <div class="mb-3">
+                <label for="instruktur" class="form-label">Instruktur:</label>
+                <input type="text" name="instruktur" id="instruktur" class="form-control" placeholder="Masukkan nama instruksi" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi:</label>
+                <textarea name="deskripsi" id="deskripsi" class="form-control" rows="4" placeholder="Masukkan Deskripsi Kursus" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="durasi" class="form-label">Durasi:</label>
+                <input type="text" name="durasi" id="durasi" class="form-control" placeholder="Masukkan Durasi" required>
+                
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+```
+Code di atas dibuat untuk menampilkan form input yang dimana data yang di inputkan tersebut dapat menambahkan data ke dalam database secara otomatis karena sudah terhubung dengan database
+
+```php
+ <script>
+       // Menambahkan event listener untuk elemen dengan ID 'id_user'
+        document.getElementById('id_user').addEventListener('change', function(){
+         // Mendapatkan opsi yang dipilih dari dropdown
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaUser = selectedOption.getAttribute('data-user');
+
+            document.getElementById('instruktur').value = namaUser || '';
+ 
+        });
+    </script>
+```
+code di atas dibuat dengan tujuan untuk menampilja nama instruktur secara otomatis ketika pengguna memilih dari dropdown id_user yang dimana artinya instruktutr tidak perlu menambhkan secara manual nama namanya
+
+```php
+<script>
+        document.getElementById('id_materi').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaMateri = selectedOption.getAttribute('data-materi');
+
+            document.getElementById('judul_kursus').value = namaMateri || '';
+        });
+    </script>
+```
+
+code di atas dibuat dengan tujuan untuk menampilkan nama judul_kursus secara otomatis ketika pengguna memilih dari dropdown id_materi yang dimana artinya judul kursus tidak perlu menambhkan secara manual judul judulnya
+### Edit (Views)
+```php
+<div class="mb-3">      
+             <label for="id_user" class="form-label">ID User:</label>
+                <select name="id_user" id="id_user" class="form-control" required>
+                   <?php foreach ($users as $user): ?>
+                     <option value="<?php echo $user['id_user']; ?>" 
+                          data-user="<?php echo $user['nama']; ?>" 
+                          <?php echo ($user['id_user'] == $kursus['id_user']) ? 'selected' : ''; ?>>
+                          <?php echo htmlspecialchars($user['id_user']); ?>
+                     </option>
+                     <?php endforeach; ?>
+                </select>
+         </div>
+```
+code di atas di buat untuk memberikan fungsi edit pada bagian id user, yang dimana data tersebut sudah ada, jadi di placeholdernya sudah tertera data apa yang sudah ada sebelumnya tinggal di edit dan diganti dengan apa yang akan diganti
+
+```php
+<div class="mb-3">
+            <label for="id_materi" class="form-label">ID Materi:</label>
+                <select name="id_materi" id="id_materi" class="form-control" required>
+                    <?php foreach ($materis as $materi): ?>
+                        <option value="<?php echo $materi['id_materi']; ?>" 
+                            data-user="<?php echo $materi['kursus_terkait']; ?>" 
+                            <?php echo ($materi['id_materi'] == $kursus['id_materi']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($materi['id_materi']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+         </div>
+```
+code di atas di buat untuk memberikan fungsi edit pada bagian id materi, yang dimana data tersebut sudah ada, jadi di placeholdernya sudah tertera data apa yang sudah ada sebelumnya tinggal di edit dan diganti dengan apa yang akan diganti
+
+```php
+ <div class="mb-3">
+                <label for="judul_kursus" class="form-label">Judul Kursus :</label>
+                <input type="text" name="judul_kursus" id="judul_kursus" class="form-control"  readonly value="<?php echo $kursus['judul_kursus']; ?>">
+          </div>
+``
+code di atas di buat untuk memberikan fungsi edit pada bagian id user, yang dimana data tersebut sudah ada, jadi di placeholdernya sudah tertera data apa yang sudah ada sebelumnya tinggal di edit dan diganti dengan apa yang akan diganti
+
+```php
+<div class="mb-3">
+                <label for="instruktur" class="form-label">Instruksi :</label>
+                <input type="text" name="instruktur" id="instruktur" class="form-control"    value="<?php echo $kursus['instruktur']; ?>">
+         </div>
+```
+code di atas di buat untuk memberikan fungsi edit pada bagian instruksi, yang dimana data tersebut sudah ada, jadi di placeholdernya sudah tertera data apa yang sudah ada sebelumnya tinggal di edit dan diganti dengan apa yang akan diganti
+
+```php
+ <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi :</label>
+                <textarea name="deskripsi" id="deskripsi" class="form-control" required>
+                   <?php echo isset($kursus['deskripsi']) ? htmlspecialchars($kursus['deskripsi'], ENT_QUOTES, 'UTF-8') : ''; ?>
+                </textarea>
+         </div>
+```
+code di atas di buat untuk memberikan fungsi edit pada bagian deskripsi, yang dimana data tersebut sudah ada, jadi di placeholdernya sudah tertera data apa yang sudah ada sebelumnya tinggal di edit dan diganti dengan apa yang akan diganti
+```php
+<div class="mb-3">
+                <label for="durasi" class="form-label">Durasi :</label>
+                <input type="text" name="durasi" id="durasi" class="form-control"  value="<?php echo $kursus['durasi']; ?>"   required>
+         </div>
+```
+code di atas di buat untuk memberikan fungsi edit pada bagian durasi, yang dimana data tersebut sudah ada, jadi di placeholdernya sudah tertera data apa yang sudah ada sebelumnya tinggal di edit dan diganti dengan apa yang akan diganti
+
+```php
+<div class="text-center">
+                <button href="kursus/halaman_kursus" type="submit" class="btn btn-primary">Update</button>
+                <a href="/kursus/halaman_kursus" class="btn btn-secondary">Back to List</a>
+         </div>
+```
+
+
+```php
+<script>
+        document.getElementById('id_user').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaUser = selectedOption.getAttribute('data-user');
+
+            document.getElementById('instruktur').value = namaUser || '';
+
+        });
+    </script>
+```
+code di atas dibuat dengan tujuan untuk menampilja nama instruktur secara otomatis ketika pengguna memilih dari dropdown id_user yang dimana artinya instruktutr tidak perlu menambhkan secara manual nama namanya, dimana juga artinya saat di akan edit juga data tersebut juga akan sudah tertera data seblumnya
+
+```php
+<script>
+        document.getElementById('id_materi').addEventListener('change', function(){
+            const selectedOption = this.options[this.selectedIndex];
+
+            const namaMateri = selectedOption.getAttribute('data-materi');
+
+            document.getElementById('judul_kursus').value = namaMateri || '';
+        });
+    </script>
+```
+code di atas dibuat dengan tujuan untuk menampilja nama judul kursus secara otomatis ketika pengguna memilih dari dropdown id_materi yang dimana artinya judul kursus tidak perlu menambhkan secara manual nama namanya, dimana juga artinya saat di akan edit juga data tersebut juga akan sudah tertera data seblumnya
+
+### Halaman_Kursus (views)
+```css
+<style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        body {
+            background-color: #f0f8ff; /* Light blue background */
+        }
+        .navbar {
+            background-color: #007bff; /* Primary blue */
+        }
+        .card {
+            border: none;
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .btn-primary {
+            background-color: #0056b3;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #004494;
+        }
+        .content {
+            flex: 1; /* Buat konten mengisi ruang yang tersisa */
+        }
+        footer {
+            width: 100%;
+            background-color: #007bff; /* Footer warna biru */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+```
+Code di atas adalah code css yang dimana akan memberikan tampilan di web(halaman_kursus) dimana akan memberikan tampilan menrarik
+
+```html
+ <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand">Sistem Manajemen Kursus Online</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/halaman_user">User</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/materi/halaman_materi">Materi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/kursus/halaman_kursus">Kursus</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+```
+code di atas dibuat untuk membuat navbar dan diberikan link agar dapat mengarah ke link atau halaman yang diinginkan
+
+```html
+<thead style="background-color:rgb(80, 156, 238); color: white;">
+                    <tr>
+                        <th>Id Kursus</th>
+                        <th>Id User</th>
+                        <th>Id Materi</th>
+                        <th>Judul Kursus</th>
+                        <th>Instruktur</th>
+                        <th>Deskripsi</th>
+                        <th>Durasi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+
+```
+code di atas digunakan untuk membuat table untuk menampilkan data data
+
+```php
+//digunkaa untuk menginisialisasikan dan mebghitung index mulai dari 1 
+<?php $id_kursus = 1; foreach ($kursuss as $kursus): ?>
+                        <tr>
+                        <td><?= $id_kursus++; ?> //diberikan agar id_kursus mulai dari 1 dan terus belanjut
+                            <td><?= htmlspecialchars($kursus['id_user']) ?></td> digunakan untuk menamilkan id user dan menaruhnya di dalam tabel
+                            <td><?= htmlspecialchars($kursus['id_materi']) ?></td> digunakan untuk menamilkan id materi dan menaruhnya di dalam tabel
+                            <td><?= htmlspecialchars($kursus['judul_kursus']) ?></td> digunakan untuk menamilkan judul kursus dan menaruhnya di dalam tabel
+                            <td><?= htmlspecialchars($kursus['instruktur']) ?></td>digunakan untuk menamilkan iinstruktur dan menaruhnya di dalam tabel
+                            <td><?= htmlspecialchars($kursus['deskripsi']) ?></td>digunakan untuk menamilkan deskripsi dan menaruhnya di dalam tabel
+                            <td><?= htmlspecialchars($kursus['durasi']) ?></td>digunakan untuk menamilkan durasi dan menaruhnya di dalam tabel
+                            <td>
+                                <a href="/kursus/edit/<?= $kursus['id_kursus']; ?>" class="btn btn-warning btn-sm">Edit</a> |
+                                <a href="/kursus/delete/<?= $kursus['id_kursus']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin?')">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+```
 
 
